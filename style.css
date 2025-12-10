@@ -1089,3 +1089,97 @@ button {
     flex-direction: column;
     justify-content: flex-end; /* Tekst onderin */
 }
+
+/* --- ADVERTENTIE SYSTEEM & GLASS UI --- */
+
+/* 1. Navbar aanpassingen */
+.balance-display {
+    background-color: #0f212e; padding: 8px 16px; border-radius: 4px;
+    color: #fff; font-weight: bold; font-size: 1.1rem; cursor: pointer;
+    display: flex; align-items: center; gap: 10px; border: 1px solid #2f4553;
+    transition: all 0.2s;
+}
+.balance-display:hover { border-color: #00e701; background-color: #213743; }
+.plus-icon {
+    background-color: #00e701; color: #011f01; width: 22px; height: 22px;
+    border-radius: 50%; display: flex; justify-content: center; align-items: center;
+    font-size: 1.4rem; font-weight: bold; line-height: 0; padding-bottom: 3px;
+}
+
+/* 2. De Overlay (Zweeft over alles heen) */
+.view-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6); /* Donkere achtergrond */
+    z-index: 9999; /* Bovenop alles */
+    display: flex; justify-content: center; align-items: center;
+    backdrop-filter: blur(4px); /* Wazige achtergrond */
+}
+.view-overlay.hidden { display: none !important; }
+
+/* 3. De Glazen Bak (Jouw tekening) */
+.ad-menu-modal.glass-panel {
+    width: 90%; max-width: 1000px;
+    padding: 30px; border-radius: 20px;
+    background-color: rgba(15, 33, 46, 0.9); /* Bijna ondoorzichtig donkerblauw */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    display: flex; flex-direction: column;
+}
+
+.ad-menu-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;
+}
+.ad-menu-header h2 { margin: 0; color: white; }
+.btn-close { background: none; border: none; color: #b1bad3; font-size: 2rem; cursor: pointer; }
+
+/* 4. De Kaarten met Plaatjes */
+.ad-options-grid { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+
+.ad-card {
+    flex: 1; min-width: 240px; height: 320px;
+    border-radius: 12px; cursor: pointer; position: relative; overflow: hidden;
+    border: 2px solid transparent; transition: transform 0.3s, border-color 0.3s;
+    background-color: #0f212e;
+    
+    /* Achtergrond Plaatjes Instellingen */
+    background-size: cover; background-position: center; background-repeat: no-repeat;
+}
+.ad-card:hover { transform: translateY(-5px); border-color: #00e701; }
+
+/* Koppel hier je plaatjes */
+.bg-shop-1 { background-image: url('images/shop-1.png'); }
+.bg-shop-2 { background-image: url('images/shop-2.png'); }
+.bg-shop-3 { background-image: url('images/shop-3.png'); }
+
+/* Tekst leesbaar maken over plaatje */
+.card-gradient-overlay {
+    width: 100%; height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 100%);
+    display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+    padding: 20px; text-align: center;
+}
+.ad-reward { font-size: 2.2rem; font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.ad-desc { color: #ddd; font-weight: bold; margin-top: 5px; }
+
+/* Badges */
+.badge {
+    position: absolute; top: 15px; right: 15px;
+    background: #ffae00; color: #000; font-weight: 900; font-size: 0.8rem;
+    padding: 5px 10px; border-radius: 6px; z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+.ad-card.best .badge { background: #00e701; }
+
+/* 5. Video Player Styling */
+#ad-player-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: black; z-index: 10000;
+    display: flex; justify-content: center; align-items: center;
+}
+.ad-player-content { width: 100%; display: flex; flex-direction: column; align-items: center; }
+#ad-video-element { max-width: 100%; max-height: 80vh; margin: 20px 0; }
+#ad-status-text { color: white; font-size: 1.2rem; font-weight: bold; }
+.ad-loader-bar { width: 80%; max-width: 600px; height: 5px; background: #333; }
+#ad-progress { width: 0%; height: 100%; background: #00e701; transition: width 0.2s; }
+.hidden { display: none !important; }

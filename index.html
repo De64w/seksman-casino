@@ -10,9 +10,9 @@
 
     <nav class="navbar">
         <div class="logo" onclick="switchView('home')">SEKSMAN</div>
-        <div class="wallet-container">
-            <span id="balance-display">0.00</span> <span class="currency">SC</span>
-            <button class="btn-primary" onclick="resetBalance()">Reset Saldo</button>
+        <div class="balance-display" onclick="openAdMenu()">
+            <span id="balance-amount">100.00</span> SC
+            <div class="plus-icon">+</div>
         </div>
     </nav>
 
@@ -334,7 +334,55 @@
     </div>
 </div>
 
-    </main>
+    
+<div id="ad-menu-overlay" class="view-overlay hidden">
+    <div class="ad-menu-modal glass-panel">
+        
+        <div class="ad-menu-header">
+            <h2>Saldo Opwaarderen</h2>
+            <button class="btn-close" onclick="closeAdMenu()">✕</button>
+        </div>
+        
+        <div class="ad-options-grid">
+            <div class="ad-card bg-shop-1" onclick="startAdSequence(1)">
+                <div class="card-gradient-overlay">
+                    <div class="ad-reward">100 SC</div>
+                    <div class="ad-desc">Bekijk 1 video</div>
+                </div>
+            </div>
+
+            <div class="ad-card bg-shop-2 popular" onclick="startAdSequence(2)">
+                <div class="badge">POPULAIR (+25%)</div>
+                <div class="card-gradient-overlay">
+                    <div class="ad-reward">250 SC</div>
+                    <div class="ad-desc">Bekijk 2 video's</div>
+                </div>
+            </div>
+
+            <div class="ad-card bg-shop-3 best" onclick="startAdSequence(3)">
+                <div class="badge">BESTE DEAL (+50%)</div>
+                <div class="card-gradient-overlay">
+                    <div class="ad-reward">450 SC</div>
+                    <div class="ad-desc">Bekijk 3 video's</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ad-player-overlay" class="hidden">
+    <div class="ad-player-content">
+        <div id="ad-status-text">Advertentie laden...</div>
+        <video id="ad-video-element" playsinline></video>
+        <div class="ad-loader-bar"><div id="ad-progress"></div></div>
+    </div>
+</div>
+
+
+
+
+
+</main>
 
     <script src="main.js"></script>
     <script src="games/mines.js"></script>
