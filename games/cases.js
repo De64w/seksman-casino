@@ -1,20 +1,43 @@
-/* games/cases.js - COMPLETE VERSIE MET VERTICALE LAYOUT */
+/* games/cases.js - COMPLETE VERSIE MET RARITY & VERTICALE LAYOUT */
 
-/* games/cases.js - CONFIGURATIE UPDATE */
+/* games/cases.js - BOVENAAN */
 
+/* --- AANGEPASTE KANSEN (Minder vaak, dus minder lag) --- */
+const RARITY_TIERS = [
+    // Mythic: van 1% naar 0.2% (1 op de 500)
+    { id: 'mythic', chance: 0.002, multiplier: 100 },   
+    
+    // Legendary: van 5% naar 1% (1 op de 100)
+    { id: 'legendary', chance: 0.01, multiplier: 10 }, 
+    
+    // Epic: van 15% naar 5% (1 op de 20)
+    { id: 'epic', chance: 0.05, multiplier: 5 },      
+    
+    // Rare: van 30% naar 12% (1 op de 8)
+    { id: 'rare', chance: 0.12, multiplier: 2 }     
+];
+
+// De functie blijft hetzelfde:
+function getDynamicTier() {
+    const roll = Math.random();
+    for (let tier of RARITY_TIERS) {
+        if (roll < tier.chance) return tier;
+    }
+    return null;
+}
+
+/* --- CASE CONFIGURATIE --- */
 const CASE_TYPES = [
     {
         id: 'beginner',
         name: 'Noob Box',
         price: 2.00,
         icon: '📦',
-        // Oude situatie: Gemiddeld 0.67 SC terug (DRAMA)
-        // Nieuwe situatie: Gemiddeld 1.95 SC terug (EERLIJK)
         items: [
-            { name: 'Oude Sok', val: 0.50, prob: 40, icon: '🧦' }, // Verlies (maar minder pijnlijk)
-            { name: 'Stenen', val: 2.00, prob: 40, icon: '🪨' },   // Break-even
-            { name: 'Hout', val: 4.00, prob: 15, icon: '🪵' },     // Winst
-            { name: 'Goudstaaf', val: 15.00, prob: 5, icon: '🌟' } // Jackpot
+            { name: 'Oude Sok', val: 0.50, prob: 40, icon: '🧦' },
+            { name: 'Stenen', val: 2.00, prob: 40, icon: '🪨' },
+            { name: 'Hout', val: 4.00, prob: 15, icon: '🪵' },
+            { name: 'Goudstaaf', val: 15.00, prob: 5, icon: '🌟' }
         ]
     },
     {
@@ -22,12 +45,11 @@ const CASE_TYPES = [
         name: 'Lucky Box',
         price: 10.00,
         icon: '💼',
-        // Hoge variantie: Je verliest vaak, maar als je wint, win je veel.
         items: [
-            { name: 'Kolen', val: 2.00, prob: 50, icon: '⚫' },    // Flink verlies
-            { name: 'IJzer', val: 12.00, prob: 30, icon: '🔩' },   // Kleine winst
-            { name: 'Goud', val: 30.00, prob: 15, icon: '🥇' },    // Goede winst
-            { name: 'Diamant', val: 150.00, prob: 5, icon: '💎' }  // Jackpot
+            { name: 'Kolen', val: 2.00, prob: 50, icon: '⚫' },
+            { name: 'IJzer', val: 12.00, prob: 30, icon: '🔩' },
+            { name: 'Goud', val: 30.00, prob: 15, icon: '🥇' },
+            { name: 'Diamant', val: 150.00, prob: 5, icon: '💎' }
         ]
     },
     {
@@ -35,49 +57,27 @@ const CASE_TYPES = [
         name: 'High Roller',
         price: 50.00,
         icon: '👑',
-        // Alles of niets
         items: [
-            { name: 'Lucht', val: 0.00, prob: 20, icon: '💨' },     // Pijnlijk
-            { name: 'Kruimels', val: 25.00, prob: 40, icon: '🍪' }, // Verlies
-            { name: 'Robijn', val: 100.00, prob: 30, icon: '🔻' },  // x2
-            { name: 'Kroon', val: 500.00, prob: 10, icon: '👑' }    // x10
+            { name: 'Lucht', val: 0.00, prob: 20, icon: '💨' },
+            { name: 'Kruimels', val: 25.00, prob: 40, icon: '🍪' },
+            { name: 'Robijn', val: 100.00, prob: 30, icon: '🔻' },
+            { name: 'Kroon', val: 500.00, prob: 10, icon: '👑' }
         ]
     },
     {
         id: 'meme',
         name: 'Brainrot Case',
         price: 5.00,
-        icon: '<img src="images/meme-case.png" class="case-menu-icon">',
-        // Evenwichtig
+        icon: '<img src="images/reels/id-meme/meme-case.png" class="case-menu-icon">',
         items: [
-            { name: 'Sad Frog', 
-                val: 1.00, 
-                prob: 40, 
-                icon: '<img src="images/crocro.png" class="case-item-img">' 
-            },
-            { 
-                name: 'Doge', 
-                val: 5.00, 
-                prob: 40, 
-                icon: '<img src="images/brrbrr.png" class="case-item-img">' 
-            },
-            { 
-                name: 'Rocket', 
-                val: 15.00, 
-                prob: 15, 
-                icon: '<img src="images/bcapu.png" class="case-item-img">' 
-            },
-            { 
-                name: 'Moon', 
-                val: 100.00, 
-                prob: 5, 
-                icon: '<img src="images/tuntuntun.png" class="case-item-img">' 
-            }
+            { name: 'Sad Frog', val: 1.00, prob: 40, icon: '<img src="images/reels/id-meme/crocro.png" class="case-item-img">' },
+            { name: 'Doge', val: 5.00, prob: 40, icon: '<img src="images/reels/id-meme/brrbrr.png" class="case-item-img">' },
+            { name: 'Rocket', val: 15.00, prob: 15, icon: '<img src="images/reels/id-meme/bcapu.png" class="case-item-img">' },
+            { name: 'Moon', val: 25.00, prob: 10, icon: '<img src="images/reels/id-meme/lala.png" class="case-item-img">' },
+            { name: 'Moon', val: 100.00, prob: 5, icon: '<img src="images/reels/id-meme/tuntuntun.png" class="case-item-img">' }
         ]
     }
 ];
-
-// ... De rest van de code blijft hetzelfde ...
 
 // --- STATE ---
 let casesGame = {
@@ -154,7 +154,6 @@ function casesStartBattle() {
     
     const results = generateBattleResults(casesGame.playerCount, casesGame.selectedCases);
     
-    // Render Vertical Layout
     renderBattleArena(results);
     runBattleAnimation(results);
 }
@@ -172,7 +171,7 @@ function generateBattleResults(playerCount, cases) {
         };
         cases.forEach(caseType => {
             const item = openCase(caseType);
-            playerObj.drops.push(item);
+            playerObj.drops.push({ ...item }); // Kopie van item maken, belangrijk voor multipliers!
             playerObj.totalValue += item.val;
         });
         players.push(playerObj);
@@ -190,22 +189,18 @@ function openCase(caseType) {
     return caseType.items[0];
 }
 
-// --- RENDER & ANIMATION (VERTICAL FIX) ---
+// --- RENDER & ANIMATION ---
 
 function renderBattleArena(players) {
-    // We gebruiken nu .cb-battle-columns als container voor de RIJEN
     const container = document.getElementById('cb-battle-columns');
     container.innerHTML = '';
-    
-    // Pas de class van de container aan naar een stack (via JS of CSS, hier via CSS 'battle-stack')
     container.className = 'battle-stack';
 
     players.forEach((p, pIndex) => {
         const row = document.createElement('div');
-        row.className = 'battle-player-row'; // Nieuwe class
+        row.className = 'battle-player-row';
         row.id = `player-row-${pIndex}`;
         
-        // Linkerkant: Info
         let html = `
             <div class="row-info">
                 <span class="player-avatar">${p.avatar}</span>
@@ -214,11 +209,9 @@ function renderBattleArena(players) {
             </div>
         `;
 
-        // Midden: De Reel Container (Hierin injecteren we later de strip)
-        // We geven dit element een uniek ID voor de animatie functie
         html += `
             <div class="row-reel-container" id="reel-container-${pIndex}">
-                </div>
+            </div>
         `;
 
         row.innerHTML = html;
@@ -240,22 +233,21 @@ async function runBattleAnimation(players) {
             const winningItem = p.drops[r];
             const caseInfo = casesGame.selectedCases[r];
             
-            // Verwijder oude classes (finished) en inhoud
             container.classList.remove('finished');
             container.innerHTML = ''; 
             
-            // Maak nieuwe strip
+            // Maak nieuwe strip (MET GLOW LOGICA)
             const reelObj = createReelStrip(caseInfo, winningItem);
             container.appendChild(reelObj.element);
             
-            // Resultaat tekst toevoegen (onzichtbaar)
+            // Resultaat tekst toevoegen
             const valLabel = document.createElement('div');
             valLabel.className = 'slot-result-value';
             valLabel.innerText = winningItem.val.toFixed(2) + ' SC';
             container.appendChild(valLabel);
 
             activeReels.push({
-                element: reelObj.strip,
+                element: reelObj.element, // Let op: element was strip
                 targetPos: reelObj.targetPos
             });
         });
@@ -270,17 +262,45 @@ async function runBattleAnimation(players) {
         // 3. Wachten (4s)
         await new Promise(res => setTimeout(res, 4000));
 
-        // 4. Afronden
+        // 4. Afronden & Multipliers checken
         players.forEach((p, pIndex) => {
             const container = document.getElementById(`reel-container-${pIndex}`);
-            container.classList.add('finished'); // Toont tekst
+            container.classList.add('finished');
             
+            // --- NIEUWE RARITY CHECK ---
+            const strip = container.querySelector('.reel-strip');
+            if (strip && strip.children[60]) {
+                const winningCard = strip.children[60];
+                if (winningCard.dataset.isSpecial === "true") {
+                    const mult = parseFloat(winningCard.dataset.multiplier);
+                    // Verhoog de waarde in het geheugen!
+                    p.drops[r].val = p.drops[r].val * mult;
+                    console.log(`BONUS! Speler ${pIndex} pakt x${mult}`);
+                    
+                    // Update label tekst met goud
+                    const valLabel = container.querySelector('.slot-result-value');
+                    if(valLabel) {
+                        valLabel.innerText = p.drops[r].val.toFixed(2) + ' SC';
+                        valLabel.style.color = '#ffd700';
+                        valLabel.innerText += ` (${winningCard.dataset.tierName.toUpperCase()}!)`;
+                    }
+                }
+            }
+            // ---------------------------
+            
+            // Totaal berekenen
             let currentTotal = 0;
             for(let i=0; i<=r; i++) currentTotal += p.drops[i].val;
-            document.getElementById(`p-total-${pIndex}`).innerText = currentTotal.toFixed(2) + " SC";
+            
+            // Totaal updaten op scherm
+            const totalEl = document.getElementById(`p-total-${pIndex}`);
+            totalEl.innerText = currentTotal.toFixed(2) + " SC";
+            
+            // Update totaal in speler object voor de eindstand
+            p.totalValue = currentTotal;
         });
 
-        await new Promise(res => setTimeout(res, 1000)); // Iets langere pauze tussen rondes
+        await new Promise(res => setTimeout(res, 1000));
     }
     finishBattle(players);
 }
@@ -289,24 +309,37 @@ function createReelStrip(caseType, winningItem) {
     const strip = document.createElement('div');
     strip.className = 'reel-strip';
     
-    const CARD_WIDTH = 80; // Match met CSS .reel-card width
-    const GAP = 6;         // Match met CSS .reel-card margin-right
+    const CARD_WIDTH = 80;
+    const GAP = 6;
     const TOTAL_CARDS = 80;
     const WIN_INDEX = 60; 
     
     for(let i=0; i < TOTAL_CARDS; i++) {
         const card = document.createElement('div');
+        
         let itemToShow;
-
         if(i === WIN_INDEX) itemToShow = winningItem;
         else {
             const randomIdx = Math.floor(Math.random() * caseType.items.length);
             itemToShow = caseType.items[randomIdx];
         }
 
-        card.className = 'reel-card';
+        card.className = 'reel-card'; // Let op: CSS moet .reel-card heten (of .case-card)
+        // Check je CSS: heet het .case-card of .reel-card? Ik gebruik hier reel-card omdat dat in je vorige code stond.
+        
+        // --- RARITY DOBBELSTEEN ---
+        const tier = getDynamicTier();
+        if (tier) {
+            card.classList.add(`rarity-${tier.id}`);
+            card.dataset.multiplier = tier.multiplier;
+            card.dataset.tierName = tier.id;
+            card.dataset.isSpecial = "true";
+        }
+        // -------------------------
+
         card.innerHTML = itemToShow.icon;
         
+        // Oude class logica voor achtergrondkleurtjes (mag blijven staan of weg)
         if(itemToShow.prob < 5) card.classList.add('legendary');
         else if(itemToShow.prob < 20) card.classList.add('rare');
         else if(itemToShow.prob < 40) card.classList.add('uncommon');
@@ -317,13 +350,14 @@ function createReelStrip(caseType, winningItem) {
 
     const widthPerCard = CARD_WIDTH + GAP;
     const basePosition = (WIN_INDEX * widthPerCard) + (CARD_WIDTH / 2);
-    const randomOffset = (Math.random() * 50) - 25; 
+    // Iets minder variatie in offset zodat we zeker weten dat de glow zichtbaar is
+    const randomOffset = (Math.random() * 20) - 10; 
     const finalPosition = basePosition + randomOffset;
 
     return {
-        element: strip,
-        strip: strip,
-        targetPos: finalPosition
+        element: strip, // Het HTML element
+        strip: strip,   // Zelfde referentie
+        targetPos: finalPosition // Waar moet hij stoppen
     };
 }
 
@@ -340,7 +374,7 @@ function finishBattle(players) {
     });
 
     let totalPot = 0;
-    players.forEach(p => totalPot += p.totalValue);
+    players.forEach(p => totalPot += p.totalValue); // Dit is nu inclusief multipliers!
 
     players.forEach((p, index) => {
         const row = document.getElementById(`player-row-${index}`);

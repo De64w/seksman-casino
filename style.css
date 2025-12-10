@@ -362,7 +362,7 @@ button {
     /* We gebruiken GEEN ::after meer, maar zetten het plaatje direct op de tegel */
     
     /* Het pad naar je plaatje (let op de exacte bestandsnaam!) */
-    background-image: url('images/icon.diamond.png');
+    background-image: url('images/mines/icon.diamond.png');
 
     /* Zorg dat het plaatje in het midden staat en niet herhaalt */
     background-position: center;
@@ -1055,27 +1055,27 @@ button {
 
 /* Specifieke plaatjes per game */
 .card-mines {
-    background-image: url('images/card-mines.png');
+    background-image: url('images/background/card-mines.png');
 
     background-size: 100% 100%;
 }
 
 .card-crash {
-    background-image: url('images/card-crash.png');
+    background-image: url('images/background/card-crash.png');
 }
 
 .card-plinko {
-    background-image: url('images/card-plinko.png');
+    background-image: url('images/background/card-plinko.png');
 
     background-size: 130% 110%;
 }
 
 .card-blackjack {
-    background-image: url('images/card-blackjack.png');
+    background-image: url('images/background/card-blackjack.png');
 }
 
 .card-cases {
-    background-image: url('images/card-cases.png');
+    background-image: url('images/background/card-cases.png');
 
     background-size: 100% 100%;
 }
@@ -1148,9 +1148,9 @@ button {
 .ad-card:hover { transform: translateY(-5px); border-color: #00e701; }
 
 /* Koppel hier je plaatjes */
-.bg-shop-1 { background-image: url('images/shop-1.png'); }
-.bg-shop-2 { background-image: url('images/shop-2.png'); }
-.bg-shop-3 { background-image: url('images/shop-3.png'); }
+.bg-shop-1 { background-image: url('images/shops/shop-1.png'); }
+.bg-shop-2 { background-image: url('images/shops/shop-2.png'); }
+.bg-shop-3 { background-image: url('images/shops/shop-3.png'); }
 
 /* Tekst leesbaar maken over plaatje */
 .card-gradient-overlay {
@@ -1210,4 +1210,60 @@ button {
     height: 80px;
     object-fit: contain;
     filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3)); /* Mooie schaduw eronder */
+}
+
+/* --- RARITY GLOED EFFECTEN (ANTI-LAG VERSIE) --- */
+
+.case-card {
+    position: relative;
+    z-index: 1;
+    /* transition weggehaald, dat kost rekenkracht tijdens scrollen */
+    border-radius: 8px; 
+    border: 2px solid #2f4553; /* Standaard rand */
+}
+
+/* 1. RARE (Blauw) - ALLEEN EEN RAND, GEEN SCHADUW/ANIMATIE */
+.rarity-rare {
+    border: 2px solid #0099ff !important;
+    /* Geen box-shadow meer = Véél sneller */
+}
+
+/* 2. EPIC (Paars) - ALLEEN EEN RAND EN LICHTE GLOED */
+.rarity-epic {
+    border: 2px solid #aa00ff !important;
+    box-shadow: 0 0 10px rgba(170, 0, 255, 0.4); 
+    /* Geen animatie meer! */
+}
+
+/* 3. LEGENDARY (Goud) - DEZE MAG NOG WEL EEN BEETJE GLOEIEN */
+.rarity-legendary {
+    border: 2px solid #ffd700 !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    /* Simpele animatie, alleen voor legendary */
+    animation: simple-pulse 2s infinite;
+}
+
+/* 4. MYTHIC (Regenboog) - VOOR DE ECHTE KLAPPERS */
+.rarity-mythic {
+    border: 3px solid transparent !important;
+    /* Complexere animatie mag hier, want dit gebeurt bijna nooit */
+    animation: rainbow-border 3s linear infinite; 
+}
+
+/* Simpele pulse (minder zwaar) */
+@keyframes simple-pulse { 
+    50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.9); } 
+}
+
+@keyframes rainbow-border {
+    0% { border-color: #ff0000; box-shadow: 0 0 10px #ff0000; }
+    33% { border-color: #00ff00; box-shadow: 0 0 10px #00ff00; }
+    66% { border-color: #0000ff; box-shadow: 0 0 10px #0000ff; }
+    100% { border-color: #ff0000; box-shadow: 0 0 10px #ff0000; }
+}
+
+/* GPU Versnelling voor de strip (Helpt tegen haperen) */
+.reel-strip {
+    will-change: transform;
+    transform-style: preserve-3d; /* Helpt browser renderen */
 }
