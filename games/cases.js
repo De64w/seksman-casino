@@ -1,23 +1,13 @@
-/* games/cases.js - COMPLETE VERSIE MET RARITY & VERTICALE LAYOUT */
+/* games/cases.js - DE "METEN IS WETEN" VERSIE (NOOIT MEER DESYNC) */
 
-/* games/cases.js - BOVENAAN */
-
-/* --- AANGEPASTE KANSEN (Minder vaak, dus minder lag) --- */
+/* --- CONFIGURATIE --- */
 const RARITY_TIERS = [
-    // Mythic: van 1% naar 0.2% (1 op de 500)
-    { id: 'mythic', chance: 0.002, multiplier: 100 },   
-    
-    // Legendary: van 5% naar 1% (1 op de 100)
-    { id: 'legendary', chance: 0.01, multiplier: 10 }, 
-    
-    // Epic: van 15% naar 5% (1 op de 20)
-    { id: 'epic', chance: 0.05, multiplier: 5 },      
-    
-    // Rare: van 30% naar 12% (1 op de 8)
-    { id: 'rare', chance: 0.12, multiplier: 2 }     
+    { id: 'mythic', chance: 0.002, multiplier: 10 },
+    { id: 'legendary', chance: 0.01, multiplier: 5 },
+    { id: 'epic', chance: 0.05, multiplier: 2 },
+    { id: 'rare', chance: 0.12, multiplier: 1.5 }
 ];
 
-// De functie blijft hetzelfde:
 function getDynamicTier() {
     const roll = Math.random();
     for (let tier of RARITY_TIERS) {
@@ -26,13 +16,9 @@ function getDynamicTier() {
     return null;
 }
 
-/* --- CASE CONFIGURATIE --- */
 const CASE_TYPES = [
     {
-        id: 'beginner',
-        name: 'Noob Box',
-        price: 2.00,
-        icon: '📦',
+        id: 'beginner', name: 'Noob Box', price: 2.00, icon: '📦',
         items: [
             { name: 'Oude Sok', val: 0.50, prob: 40, icon: '🧦' },
             { name: 'Stenen', val: 2.00, prob: 40, icon: '🪨' },
@@ -41,10 +27,7 @@ const CASE_TYPES = [
         ]
     },
     {
-        id: 'advanced',
-        name: 'Lucky Box',
-        price: 10.00,
-        icon: '💼',
+        id: 'advanced', name: 'Lucky Box', price: 10.00, icon: '💼',
         items: [
             { name: 'Kolen', val: 2.00, prob: 50, icon: '⚫' },
             { name: 'IJzer', val: 12.00, prob: 30, icon: '🔩' },
@@ -53,10 +36,7 @@ const CASE_TYPES = [
         ]
     },
     {
-        id: 'crazy',
-        name: 'High Roller',
-        price: 50.00,
-        icon: '👑',
+        id: 'crazy', name: 'High Roller', price: 50.00, icon: '👑',
         items: [
             { name: 'Lucht', val: 0.00, prob: 20, icon: '💨' },
             { name: 'Kruimels', val: 25.00, prob: 40, icon: '🍪' },
@@ -65,28 +45,20 @@ const CASE_TYPES = [
         ]
     },
     {
-        id: 'meme',
-        name: 'Brainrot Case',
-        price: 5.00,
-        icon: '<img src="images/reels/id-meme/meme-case.png" class="case-menu-icon">',
+        id: 'meme', name: 'Brainrot Case', price: 5.00, icon: '<img src="images/reels/id-meme/meme-case.png" class="case-menu-icon">',
         items: [
-            { name: 'Sad Frog', val: 1.00, prob: 40, icon: '<img src="images/reels/id-meme/crocro.png" class="case-item-img">' },
-            { name: 'Doge', val: 5.00, prob: 40, icon: '<img src="images/reels/id-meme/brrbrr.png" class="case-item-img">' },
-            { name: 'Rocket', val: 15.00, prob: 15, icon: '<img src="images/reels/id-meme/bcapu.png" class="case-item-img">' },
-            { name: 'Moon', val: 25.00, prob: 10, icon: '<img src="images/reels/id-meme/lala.png" class="case-item-img">' },
-            { name: 'Moon', val: 100.00, prob: 5, icon: '<img src="images/reels/id-meme/tuntuntun.png" class="case-item-img">' }
+            { name: 'Sad Frog', val: 1.50, prob: 50, icon: '<img src="images/reels/id-meme/crocro.png" class="case-item-img">' },
+            { name: 'Doge', val: 4.00, prob: 30, icon: '<img src="images/reels/id-meme/brrbrr.png" class="case-item-img">' },
+            { name: 'Rocket', val: 12.00, prob: 15, icon: '<img src="images/reels/id-meme/bcapu.png" class="case-item-img">' },
+            { name: 'Moon', val: 25.00, prob: 8, icon: '<img src="images/reels/id-meme/lala.png" class="case-item-img">' },
+            { name: 'Moon', val: 100.00, prob: 3, icon: '<img src="images/reels/id-meme/tuntuntun.png" class="case-item-img">' }
         ]
     }
 ];
 
-// --- STATE ---
-let casesGame = {
-    selectedCases: [],
-    playerCount: 2,
-    active: false
-};
+let casesGame = { selectedCases: [], playerCount: 2, active: false };
 
-// --- SETUP ---
+/* --- SETUP & UI --- */
 function initCases() {
     casesReset();
     const grid = document.getElementById('cb-market-grid');
@@ -140,7 +112,7 @@ function casesReset() {
     casesRenderSelection();
 }
 
-// --- BATTLE LOGIC ---
+/* --- BATTLE LOGIC --- */
 function casesStartBattle() {
     if(casesGame.selectedCases.length === 0) { alert("Selecteer minstens 1 case!"); return; }
     
@@ -153,7 +125,6 @@ function casesStartBattle() {
     document.getElementById('cb-winner-banner').classList.add('hidden');
     
     const results = generateBattleResults(casesGame.playerCount, casesGame.selectedCases);
-    
     renderBattleArena(results);
     runBattleAnimation(results);
 }
@@ -171,7 +142,7 @@ function generateBattleResults(playerCount, cases) {
         };
         cases.forEach(caseType => {
             const item = openCase(caseType);
-            playerObj.drops.push({ ...item }); // Kopie van item maken, belangrijk voor multipliers!
+            playerObj.drops.push({ ...item }); 
             playerObj.totalValue += item.val;
         });
         players.push(playerObj);
@@ -189,12 +160,12 @@ function openCase(caseType) {
     return caseType.items[0];
 }
 
-// --- RENDER & ANIMATION ---
+/* --- RENDER & ANIMATION --- */
 
 function renderBattleArena(players) {
     const container = document.getElementById('cb-battle-columns');
     container.innerHTML = '';
-    container.className = 'battle-stack';
+    container.className = 'battle-stack'; 
 
     players.forEach((p, pIndex) => {
         const row = document.createElement('div');
@@ -207,27 +178,65 @@ function renderBattleArena(players) {
                 <div class="player-name">${p.name}</div>
                 <div class="player-total" id="p-total-${pIndex}">0.00 SC</div>
             </div>
+            <div class="row-reel-container" id="reel-container-${pIndex}"></div>
+            <div class="row-history" id="history-${pIndex}"></div>
         `;
-
-        html += `
-            <div class="row-reel-container" id="reel-container-${pIndex}">
-            </div>
-        `;
-
         row.innerHTML = html;
         container.appendChild(row);
     });
 }
 
+function createReelStrip(caseType, winningItem) {
+    const strip = document.createElement('div');
+    strip.className = 'reel-strip';
+    
+    // Maten (voor het maken van elementen)
+    const TOTAL_CARDS = 110; 
+    const WIN_INDEX = 75;    
+    let winningElement = null; // Hier slaan we het winnende HTML element in op
+
+    for(let i=0; i < TOTAL_CARDS; i++) {
+        const card = document.createElement('div');
+        card.className = 'reel-card'; 
+
+        let itemToShow;
+        if(i === WIN_INDEX) {
+            itemToShow = winningItem;
+        } else {
+            const randomIdx = Math.floor(Math.random() * caseType.items.length);
+            itemToShow = caseType.items[randomIdx];
+        }
+
+        const tier = getDynamicTier();
+        if (tier) {
+            card.classList.add(`rarity-${tier.id}`);
+            card.dataset.multiplier = tier.multiplier;
+            card.dataset.tierName = tier.id;
+            card.dataset.isSpecial = "true";
+        }
+
+        card.innerHTML = itemToShow.icon;
+        strip.appendChild(card);
+        
+        // BEWAAR DIT ELEMENT!
+        if(i === WIN_INDEX) {
+            winningElement = card;
+        }
+    }
+
+    // We hoeven hier GEEN positie meer te berekenen. Dat doen we in de animatie functie.
+    // We geven alleen de strip en het winnende element terug.
+    return { element: strip, winningElement: winningElement };
+}
+
 async function runBattleAnimation(players) {
     const rounds = casesGame.selectedCases.length;
-    
+
     for (let r = 0; r < rounds; r++) {
         document.getElementById('arena-status').innerText = `Ronde ${r + 1} / ${rounds}`;
-        
         const activeReels = [];
-        
-        // 1. Voorbereiden
+
+        // 1. SETUP & METEN
         players.forEach((p, pIndex) => {
             const container = document.getElementById(`reel-container-${pIndex}`);
             const winningItem = p.drops[r];
@@ -236,67 +245,89 @@ async function runBattleAnimation(players) {
             container.classList.remove('finished');
             container.innerHTML = ''; 
             
-            // Maak nieuwe strip (MET GLOW LOGICA)
+            // Maak de strip en zet hem in de container
             const reelObj = createReelStrip(caseInfo, winningItem);
             container.appendChild(reelObj.element);
             
-            // Resultaat tekst toevoegen
+            // --- HET GROTE TRUCJE: METEN WAAR HIJ STAAT ---
+            // Omdat de strip nu in de pagina staat (appendChild), kunnen we meten!
+            const winCardLeft = reelObj.winningElement.offsetLeft;
+            const containerWidth = container.offsetWidth; // Hoe breed is het venster?
+            const cardWidth = 80; // Breedte van de kaart
+            
+            // Bereken het midden
+            // Positie van kaart - (Helft van container) + (Helft van kaart)
+            let targetPos = winCardLeft - (containerWidth / 2) + (cardWidth / 2);
+            
+            // Kleine veilige variatie (max 10px, zodat je nooit buiten de kaart valt)
+            const randomOffset = (Math.random() * 20) - 10; 
+            targetPos += randomOffset;
+            // ---------------------------------------------
+
+            // Voeg label toe
             const valLabel = document.createElement('div');
             valLabel.className = 'slot-result-value';
             valLabel.innerText = winningItem.val.toFixed(2) + ' SC';
             container.appendChild(valLabel);
 
-            activeReels.push({
-                element: reelObj.element, // Let op: element was strip
-                targetPos: reelObj.targetPos
+            activeReels.push({ 
+                element: reelObj.element, 
+                targetPos: targetPos,
+                winningElement: reelObj.winningElement // Bewaar voor later
             });
         });
 
         await new Promise(res => setTimeout(res, 50));
 
-        // 2. Draaien maar!
+        // 2. DRAAIEN
         activeReels.forEach(item => {
             item.element.style.transform = `translateX(-${item.targetPos}px)`;
         });
 
-        // 3. Wachten (4s)
-        await new Promise(res => setTimeout(res, 4000));
+        // 3. WACHTEN (4.5s)
+        await new Promise(res => setTimeout(res, 4500));
 
-        // 4. Afronden & Multipliers checken
+        // 4. RESULTATEN VERWERKEN
         players.forEach((p, pIndex) => {
             const container = document.getElementById(`reel-container-${pIndex}`);
             container.classList.add('finished');
             
-            // --- NIEUWE RARITY CHECK ---
-            const strip = container.querySelector('.reel-strip');
-            if (strip && strip.children[60]) {
-                const winningCard = strip.children[60];
+            // We gebruiken het opgeslagen winningElement, dus we weten 100% zeker dat dit de juiste is
+            const reelItem = activeReels[pIndex]; // Pak de info uit stap 1
+            const winningCard = reelItem.winningElement;
+            
+            let tierClass = ""; 
+
+            if (winningCard) {
+                // Check multipliers
                 if (winningCard.dataset.isSpecial === "true") {
                     const mult = parseFloat(winningCard.dataset.multiplier);
-                    // Verhoog de waarde in het geheugen!
                     p.drops[r].val = p.drops[r].val * mult;
-                    console.log(`BONUS! Speler ${pIndex} pakt x${mult}`);
+                    tierClass = winningCard.dataset.tierName;
                     
-                    // Update label tekst met goud
                     const valLabel = container.querySelector('.slot-result-value');
                     if(valLabel) {
                         valLabel.innerText = p.drops[r].val.toFixed(2) + ' SC';
                         valLabel.style.color = '#ffd700';
-                        valLabel.innerText += ` (${winningCard.dataset.tierName.toUpperCase()}!)`;
+                        valLabel.innerText += ` (${tierClass.toUpperCase()}!)`;
                     }
                 }
             }
-            // ---------------------------
             
-            // Totaal berekenen
+            // History Update
+            const historyContainer = document.getElementById(`history-${pIndex}`);
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item';
+            if (tierClass) historyItem.classList.add(`rarity-${tierClass}`);
+            historyItem.innerHTML = p.drops[r].icon;
+            historyContainer.appendChild(historyItem);
+            
+            // Totaal Update
             let currentTotal = 0;
             for(let i=0; i<=r; i++) currentTotal += p.drops[i].val;
             
-            // Totaal updaten op scherm
             const totalEl = document.getElementById(`p-total-${pIndex}`);
             totalEl.innerText = currentTotal.toFixed(2) + " SC";
-            
-            // Update totaal in speler object voor de eindstand
             p.totalValue = currentTotal;
         });
 
@@ -305,82 +336,23 @@ async function runBattleAnimation(players) {
     finishBattle(players);
 }
 
-function createReelStrip(caseType, winningItem) {
-    const strip = document.createElement('div');
-    strip.className = 'reel-strip';
-    
-    const CARD_WIDTH = 80;
-    const GAP = 6;
-    const TOTAL_CARDS = 80;
-    const WIN_INDEX = 60; 
-    
-    for(let i=0; i < TOTAL_CARDS; i++) {
-        const card = document.createElement('div');
-        
-        let itemToShow;
-        if(i === WIN_INDEX) itemToShow = winningItem;
-        else {
-            const randomIdx = Math.floor(Math.random() * caseType.items.length);
-            itemToShow = caseType.items[randomIdx];
-        }
-
-        card.className = 'reel-card'; // Let op: CSS moet .reel-card heten (of .case-card)
-        // Check je CSS: heet het .case-card of .reel-card? Ik gebruik hier reel-card omdat dat in je vorige code stond.
-        
-        // --- RARITY DOBBELSTEEN ---
-        const tier = getDynamicTier();
-        if (tier) {
-            card.classList.add(`rarity-${tier.id}`);
-            card.dataset.multiplier = tier.multiplier;
-            card.dataset.tierName = tier.id;
-            card.dataset.isSpecial = "true";
-        }
-        // -------------------------
-
-        card.innerHTML = itemToShow.icon;
-        
-        // Oude class logica voor achtergrondkleurtjes (mag blijven staan of weg)
-        if(itemToShow.prob < 5) card.classList.add('legendary');
-        else if(itemToShow.prob < 20) card.classList.add('rare');
-        else if(itemToShow.prob < 40) card.classList.add('uncommon');
-        else card.classList.add('common');
-
-        strip.appendChild(card);
-    }
-
-    const widthPerCard = CARD_WIDTH + GAP;
-    const basePosition = (WIN_INDEX * widthPerCard) + (CARD_WIDTH / 2);
-    // Iets minder variatie in offset zodat we zeker weten dat de glow zichtbaar is
-    const randomOffset = (Math.random() * 20) - 10; 
-    const finalPosition = basePosition + randomOffset;
-
-    return {
-        element: strip, // Het HTML element
-        strip: strip,   // Zelfde referentie
-        targetPos: finalPosition // Waar moet hij stoppen
-    };
-}
-
 function finishBattle(players) {
     document.getElementById('arena-status').innerText = "Battle Afgelopen";
     let highestTotal = -1;
     let winners = [];
 
     players.forEach(p => {
-        if(p.totalValue > highestTotal) {
-            highestTotal = p.totalValue;
-            winners = [p];
-        } else if (p.totalValue === highestTotal) winners.push(p);
+        if(p.totalValue > highestTotal) { highestTotal = p.totalValue; winners = [p]; }
+        else if (p.totalValue === highestTotal) winners.push(p);
     });
 
     let totalPot = 0;
-    players.forEach(p => totalPot += p.totalValue); // Dit is nu inclusief multipliers!
+    players.forEach(p => totalPot += p.totalValue);
 
     players.forEach((p, index) => {
         const row = document.getElementById(`player-row-${index}`);
         const isWinner = winners.includes(p);
-        if(isWinner) row.classList.add('winner');
-        else row.classList.add('loser');
+        if(isWinner) row.classList.add('winner'); else row.classList.add('loser');
     });
 
     const userWon = winners.some(w => w.isUser);
