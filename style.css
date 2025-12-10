@@ -1460,61 +1460,53 @@ button {
     }
 }
 
-/* --- SLOTS KAART FIX --- */
+/* style.css - SLOTS KAART FIX */
 
 .card-slots {
-    /* De gouden rand */
+    position: relative;
     border: 2px solid #ffd700;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
-    
-    /* BELANGRIJK: Padding weghalen zodat plaatje rand raakt */
-    padding: 0 !important; 
-    
-    /* Zorg dat alles onder elkaar staat */
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; /* Zorg dat plaatje niet buiten de ronde hoeken komt */
-    height: 100%; /* Zelfde hoogte als de rest */
-}
-
-/* 1. Het Plaatje (Boven) */
-.card-slots .card-image-wrapper {
-    height: 140px; /* Vaste hoogte voor het plaatje */
-    width: 100%;
-    background: #000; /* Zwart achtergrondje mocht plaatje niet laden */
-}
-
-.card-slots img {
-    width: 100%;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    overflow: hidden;
     height: 100%;
-    object-fit: cover; /* DIT FIKST HET UITREKKEN! */
+    display: flex;
+    padding: 0 !important;
+}
+
+/* Achtergrond Plaatje */
+.card-image-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1;
+}
+.card-image-bg img {
+    width: 100%; height: 100%; object-fit: cover;
     transition: transform 0.5s;
 }
+.card-slots:hover .card-image-bg img { transform: scale(1.1); }
 
-/* Zoom effectje */
-.card-slots:hover img {
-    transform: scale(1.1);
-}
-
-/* 2. De Tekst (Onder) */
-.card-slots .card-content {
-    /* Hier komt de gouden kleur */
-    background: linear-gradient(135deg, #d4af37 0%, #8a6d20 100%);
-    color: white;
-    padding: 15px; /* Ruimte om de tekst */
-    flex-grow: 1;  /* Vul de rest van de kaart */
+/* De Overlay (Gradiënt) */
+.card-overlay {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%; height: 100%;
+    z-index: 2;
+    /* Gradiënt van doorzichtig naar donkerder goud voor leesbaarheid */
+    background: linear-gradient(to top, rgba(212, 175, 55, 0.8) 0%, rgba(212, 175, 55, 0.0) 60%);
+    
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end; /* Tekst onderin */
+    padding: 15px;
 }
 
-.card-slots h2 {
+/* De Tekst (DIT MOET DE H2 ZIJN) */
+.card-slots .card-overlay h2 {
+    color: #ffd700 !important; /* Forceer GOUD */
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-align: center;
     margin: 0;
-    font-size: 1.5rem;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-.card-slots p {
-    margin: 5px 0 0 0;
-    opacity: 0.9;
+    
+    /* Zwarte rand/schaduw om de letters zodat ze knallen */
+    text-shadow: 0 2px 0px #000, 0 0 10px rgba(0,0,0,0.8);
 }
