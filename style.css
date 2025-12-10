@@ -875,3 +875,155 @@ button {
         opacity: 1;
     }
 }
+
+/* =========================================
+   MOBILE RESPONSIVENESS (TELEFOON FIXES)
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    /* --- ALGEMENE LAYOUT --- */
+    
+    #app-container {
+        padding: 15px; /* Minder witruimte aan de zijkanten */
+    }
+
+    .navbar {
+        padding: 10px 15px; /* Compactere navbar */
+    }
+
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    /* Zet de sidebar en game onder elkaar ipv naast elkaar */
+    .game-container {
+        flex-direction: column-reverse; /* Controls onder, Game boven (handig voor duim) */
+        gap: 20px;
+    }
+    
+    /* Voor Cases en Blackjack willen we misschien een andere volgorde */
+    .cases-mode, .blackjack-mode {
+        flex-direction: column;
+    }
+
+    .game-sidebar {
+        width: 100%; /* Sidebar pakt volle breedte */
+        min-width: 0;
+    }
+
+    .game-board-wrapper, .crash-board-wrapper, .plinko-board-wrapper {
+        min-width: 0; /* Voorkomt dat container scherm uitduwt */
+        padding: 10px;
+        min-height: 300px;
+    }
+
+    /* --- CRASH --- */
+    #crash-canvas {
+        height: 250px; /* Iets minder hoog op mobiel */
+    }
+    
+    #crash-current-multiplier {
+        font-size: 2.5rem; /* Iets kleinere tekst */
+    }
+
+    /* --- MINES --- */
+    .mines-grid {
+        gap: 5px; /* Tegels dichter op elkaar */
+    }
+    
+    .mine-tile {
+        font-size: 1.5rem; /* Kleinere emoji's */
+        border-width: 1px; /* Dunnere randjes */
+    }
+
+    /* --- PLINKO --- */
+    /* Dit is belangrijk: dwing het canvas om te krimpen */
+    #plinko-canvas {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    /* --- BLACKJACK --- */
+    .bj-table-felt {
+        border-radius: 20px; /* Geen halve cirkel meer, gewoon een rechthoekige tafel */
+        padding: 15px;
+        min-height: auto;
+    }
+
+    .bj-center-decor {
+        opacity: 0.1; /* Tekst minder fel zodat kaarten leesbaar blijven */
+        top: 30%;
+    }
+    
+    .bj-center-decor h2 { font-size: 1.2rem; }
+
+    /* Maak kaarten iets kleiner zodat ze passen */
+    .playing-card {
+        width: 50px;
+        height: 75px;
+        font-size: 0.9rem;
+        margin-left: -20px; /* Meer overlap */
+    }
+    
+    .card-center { font-size: 1.2rem; }
+
+    .bj-chip-stack .chip {
+        transform: scale(0.6); /* Chips op tafel kleiner maken */
+    }
+
+    /* Knoppenbalk onderin aanpassen */
+    .bj-controls-row {
+        flex-direction: column; /* Chips boven, acties onder */
+        gap: 10px;
+    }
+    
+    .chip-rack {
+        flex-wrap: wrap; /* Chips mogen naar volgende regel */
+        justify-content: center;
+    }
+
+    .bet-actions {
+        width: 100%;
+        display: flex;
+        gap: 10px;
+    }
+    
+    .bet-actions button {
+        flex: 1; /* Knoppen vullen de breedte */
+    }
+
+    /* --- CASES --- */
+    .cases-mode {
+        max-width: 100%;
+    }
+
+    .battle-player-row {
+        flex-direction: column; /* Info boven, Reel onder */
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .row-info {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #2f4553;
+        padding-bottom: 5px;
+        padding-right: 0;
+        flex-direction: row; /* Naam en Avatar naast elkaar */
+        justify-content: space-between;
+    }
+    
+    .player-avatar { font-size: 1.5rem; }
+    
+    .row-reel-container {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .reel-card {
+        width: 60px; /* Kleinere items in de reel */
+        height: 60px;
+        font-size: 1.5rem;
+    }
+}
