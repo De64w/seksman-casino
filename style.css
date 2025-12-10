@@ -1,0 +1,877 @@
+/* Reset & Basis */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: #1a2c38; /* Diep donkerblauw/grijs */
+    color: #ffffff;
+}
+
+/* Knoppen Algemeen */
+button {
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: #00e701; /* Neon Groen */
+    color: #011f01;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+.btn-primary:hover {
+    background-color: #00ff01;
+    box-shadow: 0 0 10px rgba(0, 231, 1, 0.4);
+}
+
+.btn-back {
+    background: transparent;
+    color: #b1bad3;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.btn-back:hover {
+    color: white;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #0f212e;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    
+    /* NIEUW: Maakt het duidelijk klikbaar */
+    cursor: pointer; 
+    transition: opacity 0.2s;
+}
+
+.logo:hover {
+    opacity: 0.8; /* Klein effectje bij hover */
+}
+
+.wallet-container {
+    background-color: #213743;
+    padding: 8px 16px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+}
+
+.currency {
+    color: #00e701;
+}
+
+/* Main Layout */
+#app-container {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Views Logic */
+.hidden {
+    display: none !important;
+}
+
+/* Home / Grid */
+.hero {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #b1bad3;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.game-card {
+    background-color: #0f212e;
+    height: 250px;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: flex-end;
+    background-image: linear-gradient(to bottom, #213743, #0f212e);
+    border: 1px solid transparent;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    border-color: #00e701;
+}
+
+.card-content {
+    padding: 20px;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
+.card-content h2 {
+    font-size: 1.2rem;
+}
+
+.card-content p {
+    font-size: 0.9rem;
+    color: #b1bad3;
+}
+
+/* Game Interface Placeholder */
+.game-interface {
+    background-color: #0f212e;
+    padding: 30px;
+    border-radius: 8px;
+    min-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed #2f4553;
+}
+
+/* --- GAME LAYOUT (Generiek voor alle games) --- */
+.game-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.game-sidebar {
+    flex: 1;
+    min-width: 250px;
+    background-color: #213743;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.game-board-wrapper {
+    flex: 2;
+    min-width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0f212e;
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+}
+
+/* Inputs */
+.input-group label {
+    display: block;
+    color: #b1bad3;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.input-wrapper {
+    display: flex;
+    background-color: #0f212e;
+    border: 1px solid #2f4553;
+    border-radius: 4px;
+    padding: 0; /* Geen padding op de container zelf */
+    overflow: hidden; /* Zorgt dat de inhoud niet buiten de ronde hoeken komt */
+    align-items: stretch; /* Zorgt dat knoppen en input even hoog zijn */
+}
+
+.input-wrapper:focus-within {
+    border-color: #00e701;
+}
+
+.input-wrapper input {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    font-weight: bold;
+    outline: none;
+    
+    /* FIX: Dit zorgt dat de input mag krimpen als het te krap wordt */
+    flex: 1 1 auto;
+    min-width: 0; 
+}
+
+.input-buttons button {
+    background-color: #213743;
+    color: #b1bad3;
+    padding: 0 15px;
+    border: none;
+    border-left: 1px solid #2f4553;
+    border-radius: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    
+    /* FIX: Zorgt dat tekst perfect in het midden staat */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Zeker weten dat hij de hoogte pakt */
+}
+
+.input-buttons button:hover {
+    background-color: #3e5b6b;
+    color: white;
+}
+
+.input-buttons {
+    display: flex;
+    border-left: 1px solid #2f4553;
+    
+    /* FIX: Zorg dat de knoppen nooit kleiner worden gedrukt */
+    flex-shrink: 0; 
+}
+
+.mines-select-wrapper select {
+    background-color: #0f212e; /* Donkere achtergrond */
+    color: white;              /* Witte tekst */
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Zorg dat de lijstjes ook donker zijn als ze uitklappen */
+.mines-select-wrapper select option {
+    background-color: #0f212e;
+    color: white;
+}
+
+.btn-large {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    margin-top: auto; /* Duw naar beneden */
+}
+
+.game-info-panel {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    background: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/* --- MINES SPECIFIC --- */
+.mines-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.mine-tile {
+    background-color: #2f4553;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.2s, border-color 0.2s;
+    
+    /* De fix voor het verspringen uit de vorige stap */
+    border: 2px solid transparent; 
+    box-sizing: border-box; 
+    
+    /* NIEUWE FIX: Dwing deze tegel ALTIJD vierkant te zijn */
+    aspect-ratio: 1 / 1; 
+    /* -------------------------------------------------- */
+
+    position: relative;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    font-size: 2rem;
+    line-height: 1; 
+    user-select: none;
+}
+
+/* Bij hover beweegt hij, maar de grootte blijft gelijk */
+.mine-tile:hover {
+    background-color: #3e5b6b;
+    transform: translateY(-2px);
+}
+
+.mine-tile:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Revealed States */
+.mine-tile.revealed {
+    cursor: default;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Alleen de kleur verandert, de rand was er al */
+.mine-tile.gem {
+    background-color: #0f212e;
+    border-color: #00e701;
+}
+
+.mine-tile.boom {
+    background-color: #521c1c;
+    border-color: #ff4444;
+}
+
+.mine-tile.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Icons (emoji for now, SVGs in real prod) */
+.icon-gem::after { content: "💎"; }
+.icon-bomb::after { content: "💣"; }
+
+/* Animation voor winst */
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    80% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+.icon-gem::after, .icon-bomb::after {
+    display: inline-block;
+    animation: popIn 0.3s ease-out forwards;
+}
+
+/* --- CRASH GAME STYLING --- */
+
+.crash-board-wrapper {
+    flex: 2;
+    min-width: 300px;
+    background-color: #0f212e;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* History Bar */
+.crash-history {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    
+    /* NIEUW: We pinnen hem ook vast aan de linkerkant (met wat marge).
+       Hierdoor mag de balk over de hele breedte van het scherm lopen. */
+    left: 15px; 
+    
+    height: 30px;
+    display: flex;
+    align-items: center;
+    
+    /* Zorg dat de blokjes rechts beginnen */
+    flex-direction: row-reverse;
+    justify-content: flex-start; /* 'Start' is hier rechts door de reverse */
+    
+    gap: 8px;
+    z-index: 20;
+    
+    background-color: transparent;
+    overflow: hidden;
+
+    /* Fade-out effect: iets breder gemaakt (80px) voor een zachtere overgang */
+    mask-image: linear-gradient(to right, transparent, black 80px);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 80px);
+}
+
+.history-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #2f4553;
+}
+
+.history-badge.win {
+    background-color: #00e701;
+    color: #011f01;
+}
+
+.history-badge.loss {
+    background-color: #ff4444; /* Rood */
+    color: #fff;
+}
+
+.history-badge.moon {
+    background-color: #ffae00; /* Goud voor hoge multipliers */
+    color: black;
+}
+
+/* Canvas */
+#crash-canvas {
+    width: 100%;
+    height: 400px; /* Vaste hoogte voor desktop */
+    background: radial-gradient(circle at bottom left, #1a2c38 0%, #0f212e 70%);
+    cursor: default;
+}
+
+/* Overlay voor de grote tekst */
+.crash-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none; /* Klik er doorheen */
+}
+
+#crash-current-multiplier {
+    font-size: 4rem;
+    font-weight: 900;
+    color: white;
+    text-shadow: 0 0 20px rgba(0,0,0,0.5);
+    font-variant-numeric: tabular-nums; /* Voorkomt springen van cijfers */
+}
+
+#crash-status-text {
+    font-size: 1rem;
+    color: #b1bad3;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+/* Status kleuren voor de tekst */
+.text-crashed {
+    color: #ff4444 !important;
+}
+
+.text-cashed {
+    color: #00e701 !important;
+}
+
+/* --- PLINKO STYLING --- */
+.plinko-board-wrapper {
+    flex: 2;
+    min-width: 300px;
+    background-color: #0f212e;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 20px;
+    position: relative;
+}
+
+#plinko-canvas {
+    /* Canvas grootte wordt door JS geregeld voor scherpte */
+    max-width: 100%;
+    max-height: 800px;
+}
+
+/* --- CASES BATTLE: VERTICALE LAYOUT (Gecentreerd) --- */
+
+.cases-mode {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* AANPASSING: Iets smaller gemaakt voor meer ruimte links/rechts */
+    max-width: 900px; 
+    margin: 0 auto; /* Centraal op de pagina */
+}
+
+/* SETUP HEADER */
+.cases-controls-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #213743;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* WINKEL MANDJE */
+.cases-selection-bar {
+    background-color: #0f212e;
+    min-height: 80px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+    overflow-x: auto;
+    border: 1px dashed #2f4553;
+}
+
+/* WINKEL GRID */
+.cases-market-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+}
+.market-case-card {
+    background-color: #213743;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+    border: 2px solid transparent;
+}
+.market-case-card:hover { transform: translateY(-5px); border-color: #00e701; }
+.case-img { font-size: 3rem; display: block; margin-bottom: 10px; }
+.case-price { color: #00e701; font-weight: bold; background: #0f212e; padding: 4px 8px; border-radius: 4px; }
+.selected-case-thumb { min-width: 60px; height: 60px; background: #213743; border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; cursor: pointer; border: 1px solid #00e701; }
+.selected-case-thumb:hover { background: #ff4444; }
+.empty-msg { color: #b1bad3; width: 100%; text-align: center; font-style: italic; }
+
+
+/* --- VERTICALE ARENA (Gecentreerd) --- */
+
+.battle-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    align-items: center; /* Centreer de rijen */
+}
+
+/* Eén rij per speler */
+.battle-player-row {
+    background-color: #0f212e;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centreer de inhoud */
+    gap: 20px;
+    border: 1px solid #213743;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+/* Linkerkant: Info Speler */
+.row-info {
+    width: 120px;
+    text-align: center;
+    flex-shrink: 0; /* Mag niet krimpen */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    border-right: 1px solid #2f4553;
+    padding-right: 15px;
+}
+
+.player-avatar { font-size: 2.5rem; }
+.player-name { font-weight: bold; color: white; font-size: 0.9rem; }
+.player-total { 
+    color: #00e701; font-weight: bold; background: rgba(0, 231, 1, 0.1); 
+    padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; margin-top: 5px;
+}
+
+/* Midden: De Reel */
+.row-reel-container {
+    flex: 1; /* Neem de ruimte... */
+    max-width: 650px; /* ...maar niet meer dan dit. Dit houdt het compact in het midden. */
+    height: 100px;
+    background-color: #1a2c38;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden; /* ESSENTIEEL: Verbergt de strip die buiten beeld is */
+    box-shadow: inset 0 0 20px #000;
+    border: 1px solid #2f4553;
+}
+
+/* De Winlijn (Gele streep) */
+.row-reel-container::after {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: 50%;
+    width: 4px;
+    background-color: #ffae00;
+    transform: translateX(-50%);
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(255, 174, 0, 0.8);
+}
+
+/* De bewegende strip */
+.reel-strip {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    padding-left: 50%; /* Start in het midden */
+    will-change: transform;
+    transition: transform 4s cubic-bezier(0.12, 0, 0.05, 1);
+}
+
+/* De kaarten in de strip */
+.reel-card {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    margin-right: 6px;
+    background-color: #213743;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    position: relative;
+    border-bottom: 3px solid #2f4553;
+}
+
+.reel-card.common { border-bottom-color: #b1bad3; }
+.reel-card.uncommon { border-bottom-color: #5e98d9; }
+.reel-card.rare { border-bottom-color: #8847ff; }
+.reel-card.legendary { border-bottom-color: #ffae00; }
+
+/* Resultaat tekst */
+.slot-result-value {
+    position: absolute;
+    bottom: 5px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.8); padding: 2px 8px; border-radius: 4px;
+    font-size: 0.8rem; font-weight: bold; color: #00e701;
+    opacity: 0; transition: opacity 0.3s; z-index: 20; pointer-events: none;
+    white-space: nowrap;
+}
+.row-reel-container.finished .slot-result-value { opacity: 1; }
+
+/* Winnaar / Verliezer styling */
+.battle-player-row.winner { border: 2px solid #00e701; box-shadow: 0 0 15px rgba(0,231,1,0.2); }
+.battle-player-row.loser { opacity: 0.6; }
+
+/* Arena Header */
+.arena-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.arena-status { font-weight: bold; color: #b1bad3; }
+#cb-winner-banner { text-align: center; font-size: 1.5rem; font-weight: bold; margin-top: 20px; animation: popIn 0.5s ease; }
+
+/* --- BLACKJACK STYLING UPDATE --- */
+
+.blackjack-mode {
+    flex-direction: column;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    gap: 20px;
+}
+
+/* 1. DE TAFEL */
+.bj-table-container { width: 100%; position: relative; padding-bottom: 20px; }
+.bj-table-felt {
+    background: radial-gradient(circle at 50% 100%, #204938 0%, #11261d 100%);
+    border: 8px solid #362e26;
+    border-radius: 200px 200px 20px 20px;
+    min-height: 500px; /* Iets hoger voor de chips */
+    position: relative;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.bj-center-decor { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); text-align: center; opacity: 0.3; pointer-events: none; }
+.bj-center-decor h2 { margin: 0; font-size: 2rem; color: #7abf9a; letter-spacing: 2px; }
+.bj-center-decor p { color: #7abf9a; font-size: 0.8rem; font-weight: bold; margin-top: 5px; }
+
+/* 2. HAND AREAS & CARDS */
+.bj-hand-area { display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 5; min-height: 140px; }
+.bj-label { font-size: 0.8rem; font-weight: bold; color: #7abf9a; letter-spacing: 1px; }
+.bj-score-bubble { background-color: rgba(0,0,0,0.6); color: white; padding: 4px 12px; border-radius: 12px; font-weight: bold; border: 1px solid #7abf9a; font-size: 0.9rem; }
+.bj-player-hands-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px; /* Ruimte tussen de twee handen */
+    width: 100%;
+}
+
+.bj-hand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+/* De hand die NIET aan de beurt is, wordt gedimd */
+.bj-hand.inactive-hand {
+    opacity: 0.4;
+    transform: scale(0.9);
+}
+
+/* De actieve hand */
+.bj-hand.active-hand {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 10;
+}
+
+.bj-hand.hidden {
+    display: none;
+}
+
+/* Zorg dat kaarten goed blijven staan */
+.bj-cards {
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    min-width: 100px; /* Voorkom inklappen */
+}
+
+/* CSS KAARTEN (Ongewijzigd) */
+.playing-card { width: 70px; height: 100px; background-color: white; border-radius: 6px; box-shadow: -2px 2px 5px rgba(0,0,0,0.3); margin: 0 5px; margin-left: -30px; position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 5px; font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 1.2rem; transition: transform 0.3s, margin 0.3s; user-select: none; }
+.playing-card:first-child { margin-left: 0; }
+.playing-card:hover { transform: translateY(-10px); z-index: 10; }
+.card-red { color: #d40000; } .card-black { color: #111; }
+.card-top { align-self: flex-start; line-height: 1; }
+.card-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; }
+.card-bottom { align-self: flex-end; transform: rotate(180deg); line-height: 1; }
+.playing-card.facedown { background: repeating-linear-gradient(45deg, #b72c2c, #b72c2c 10px, #a32222 10px, #a32222 20px); border: 2px solid white; }
+.playing-card.facedown * { display: none; }
+
+/* 3. BETTING SPOT & VISUAL CHIPS ON TABLE */
+.bj-bet-spot-container {
+    position: relative;
+    width: 80px; height: 80px;
+    margin-top: 15px;
+}
+.bj-bet-spot {
+    width: 100%; height: 100%;
+    border: 2px dashed #7abf9a;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    color: #7abf9a; font-weight: bold; font-size: 0.8rem;
+    background-color: rgba(0,0,0,0.2);
+}
+.bj-chip-stack {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; justify-content: center; align-items: center;
+    pointer-events: none;
+}
+/* Chips op tafel zijn iets kleiner */
+.bj-chip-stack .chip { transform: scale(0.8); position: absolute; margin-top: -5px; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+
+.bj-total-bet-display { color: white; margin-top: 5px; font-weight: bold; }
+
+
+/* 4. CONTROLS & NIEUWE KNOPPEN STIJL */
+.bj-controls-wrapper { background-color: #213743; padding: 20px; border-radius: 8px; }
+.bj-controls-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+.chip-rack { display: flex; gap: 10px; }
+
+/* De chips in de rack */
+.chip { width: 50px; height: 50px; border-radius: 50%; border: 4px dashed white; font-weight: bold; font-size: 0.9rem; color: white; box-shadow: 0 3px 0 rgba(0,0,0,0.3); transition: transform 0.1s; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+.chip:active { transform: translateY(2px); box-shadow: none; }
+.chip-1 { background: #888; border-color: #aaa; } .chip-5 { background: #d40000; border-color: #ff4444; }
+.chip-10 { background: #0044aa; border-color: #4488ff; } .chip-25 { background: #008800; border-color: #00cc00; }
+.chip-100 { background: #111; border-color: #444; }
+
+/* Betting knoppen (Wis / Deel) */
+.btn-clear { background: #3a4b57; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+.btn-clear:hover { background: #ff4444; }
+.btn-deal { background: #00e701; color: #011f01; border: none; padding: 12px 30px; border-radius: 4px; font-weight: 900; font-size: 1.1rem; cursor: pointer; }
+.btn-deal:hover { background: #00c401; }
+
+/* NIEUW: Play Action Buttons (Vierkant, Icoon+Tekst) */
+.btn-bj-action {
+    flex: 1; /* Even breed */
+    aspect-ratio: 1 / 1; /* Vierkant */
+    max-width: 100px; /* Niet te groot worden */
+    border: none;
+    border-radius: 12px;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    transition: transform 0.1s, filter 0.1s;
+    color: white; font-weight: 900;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    position: relative;
+    top: 0;
+}
+.btn-bj-action:active:not([disabled]) { top: 4px; box-shadow: none; }
+.btn-bj-action:hover:not([disabled]) { filter: brightness(1.1); }
+.btn-bj-action[disabled] { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+
+.btn-icon { font-size: 1.8rem; line-height: 1; }
+.btn-text { font-size: 0.9rem; text-transform: uppercase; }
+
+.btn-hit { background-color: #00e701; color: #011f01; }
+.btn-stand { background-color: #ff4444; }
+.btn-double { background-color: #ffae00; color: #3d2900; }
+.btn-split { background-color: #3a4b57; } /* Blauw/Grijs */
+
+/* 5. NIEUWE GOUDEN WIN OVERLAY */
+
+#bj-result-title { font-size: 1.5rem; color: white; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
+
+.gold-text {
+    font-size: 4rem;
+    font-weight: 900;
+    color: #ffae00; /* Gewoon een solide gouden kleur */
+    /* De complexe shadows en gradients zijn verwijderd voor een simpelere look */
+}
+
+.bj-overlay {
+    position: absolute;
+    top: 50%; 
+    left: 50%; 
+    /* Geen transform hier, dat doet de animatie nu */
+    background-color: rgba(0,0,0,0.9); 
+    padding: 30px 50px; 
+    border-radius: 16px;
+    border: 3px solid #ffae00; 
+    z-index: 20; 
+    text-align: center; 
+    box-shadow: 0 0 50px rgba(255, 174, 0, 0.3);
+    
+    /* Gebruik de nieuwe 'popCenter' animatie */
+    animation: popCenter 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Deze animatie houdt het element in het midden */
+@keyframes popCenter {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEKSMAN Casino</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo" onclick="switchView('home')">SEKSMAN</div>
+        <div class="wallet-container">
+            <span id="balance-display">0.00</span> <span class="currency">SC</span>
+            <button class="btn-primary" onclick="resetBalance()">Reset Saldo</button>
+        </div>
+    </nav>
+
+    <main id="app-container">
+        
+        <div id="view-home" class="view active">
+            <header class="hero">
+                <h1>Welkom bij SEKSMAN</h1>
+                <p>Koffie eerst, strijd erna!</p>
+            </header>
+
+            <div class="games-grid">
+                <div class="game-card" onclick="switchView('mines')">
+                    <div class="card-content">
+                        <h2>Mines</h2>
+                        <p>Ontwijk de bommen</p>
+                    </div>
+                </div>
+                
+                <div class="game-card" onclick="switchView('crash')">
+                    <div class="card-content">
+                        <h2>Crash</h2>
+                        <p>Spring op tijd</p>
+                    </div>
+                </div>
+
+                <div class="game-card" onclick="switchView('plinko')">
+                    <div class="card-content">
+                        <h2>Plinko</h2>
+                        <p>Laat de bal vallen</p>
+                    </div>
+                </div>
+
+                <div class="game-card" onclick="switchView('cases')">
+                    <div class="card-content">
+                        <h2>Cases</h2>
+                        <p>Open kisten</p>
+                    </div>
+                </div>
+
+                <div class="game-card" onclick="switchView('blackjack')">
+                    <div class="card-content">
+                        <h2>Blackjack</h2>
+                        <p>Versla de dealer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-mines" class="view hidden">
+            <button class="btn-back" onclick="switchView('home')">← Terug naar Lobby</button>
+            <h1>Mines</h1>
+            <div class="game-container">
+    <div class="game-sidebar">
+        <div class="input-group">
+            <label>Inzet Bedrag (SC)</label>
+            <div class="input-wrapper">
+                <input type="number" id="mines-bet" value="10" min="0.1">
+                <div class="input-buttons">
+                    <button onclick="minesSetBet(0.5)">½</button>
+                    <button onclick="minesSetBet(2)">2x</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Aantal Mijnen (1-24)</label>
+            <div class="mines-select-wrapper">
+    <select id="mines-count" onchange="minesUpdateNextMultiplier()"></select>
+</div>
+        </div>
+
+        <div class="game-info-panel">
+            <span>Volgende: <strong id="mines-next-mult">1.13x</strong></span>
+            <span>Huidige winst: <strong id="mines-profit" class="currency">0.00</strong> SC</span>
+        </div>
+
+        <button id="mines-action-btn" class="btn-primary btn-large" onclick="minesAction()">
+            Start Spel
+        </button>
+    </div>
+
+    <div class="game-board-wrapper">
+        <div id="mines-grid" class="mines-grid">
+            </div>
+    </div>
+</div>
+        </div>
+
+        <div id="view-crash" class="view hidden">
+            <button class="btn-back" onclick="switchView('home')">← Terug naar Lobby</button>
+    <div class="game-container">
+        
+        <div class="game-sidebar">
+            <div class="input-group">
+                <label>Inzet Bedrag (SC)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="crash-bet" value="10" min="0.1">
+                    <div class="input-buttons">
+                        <button onclick="crashSetBet(0.5)">½</button>
+                        <button onclick="crashSetBet(2)">2x</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Auto Cashout (Optioneel)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="crash-auto" placeholder="2.00" min="1.01">
+                </div>
+            </div>
+
+            <div class="game-info-panel">
+                <span>Winst bij cashout:</span>
+                <strong id="crash-potential-win" class="currency">0.00 SC</strong>
+            </div>
+
+            <button id="crash-action-btn" class="btn-primary btn-large" onclick="crashAction()">
+                Start Ronde
+            </button>
+        </div>
+
+        <div class="crash-board-wrapper">
+            <div class="crash-history" id="crash-history">
+                </div>
+
+            <canvas id="crash-canvas"></canvas>
+
+            <div class="crash-overlay">
+                <div id="crash-current-multiplier">1.00x</div>
+                <div id="crash-status-text">Wachten op start...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="view-plinko" class="view hidden">
+    <div class="game-container">
+        <div class="game-sidebar">
+            <div class="input-group">
+                <label>Inzet Bedrag (SC)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="plinko-bet" value="10" min="0.1">
+                    <div class="input-buttons">
+                        <button onclick="plinkoSetBet(0.5)">½</button>
+                        <button onclick="plinkoSetBet(2)">2x</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Risico</label>
+                <div class="mines-select-wrapper"> <select id="plinko-risk" onchange="plinkoUpdateUI()">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Aantal Rijen (8 - 16)</label>
+                <div class="mines-select-wrapper">
+                    <select id="plinko-rows" onchange="plinkoUpdateUI()">
+                        <option value="8">8 Rijen</option>
+                        <option value="10">10 Rijen</option>
+                        <option value="12">12 Rijen</option>
+                        <option value="14">14 Rijen</option>
+                        <option value="16" selected>16 Rijen</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="plinko-action-btn" class="btn-primary btn-large" onclick="plinkoDrop()">
+                Speel
+            </button>
+        </div>
+
+        <div class="plinko-board-wrapper">
+            <canvas id="plinko-canvas"></canvas>
+            </div>
+    </div>
+</div>
+
+        <div id="view-cases" class="view hidden">
+    <div class="game-container cases-mode">
+        
+        <div id="cases-setup" class="cases-setup-wrapper">
+            
+            <div class="cases-controls-header">
+                <div class="cases-mode-select">
+                    <label>Modus:</label>
+                    <select id="cb-mode" onchange="casesUpdateCost()">
+                        <option value="2">1 vs 1 (2 Spelers)</option>
+                        <option value="3">1 vs 2 (3 Spelers)</option>
+                        <option value="4">1 vs 3 (4 Spelers)</option>
+                    </select>
+                </div>
+                
+                <div class="cases-cost-display">
+                    <span>Totale Kosten:</span>
+                    <strong id="cb-total-cost" class="currency">0.00 SC</strong>
+                </div>
+
+                <button id="cb-start-btn" class="btn-primary" onclick="casesStartBattle()">
+                    Maak Battle
+                </button>
+            </div>
+
+            <div class="cases-selection-bar" id="cb-selection-bar">
+                <div class="empty-msg">Klik op cases hieronder om ze toe te voegen</div>
+            </div>
+
+            <div class="cases-market-grid" id="cb-market-grid">
+                </div>
+        </div>
+
+        <div id="cases-arena" class="cases-arena-wrapper hidden">
+            <div class="arena-header">
+                <button class="btn-back" onclick="casesReset()">← Nieuwe Battle</button>
+                <div class="arena-status" id="arena-status">Ronde 1 / 5</div>
+            </div>
+
+            <div class="battle-columns" id="cb-battle-columns">
+                </div>
+
+            <div id="cb-winner-banner" class="hidden">
+                </div>
+        </div>
+
+    </div>
+</div>
+
+        <div id="view-blackjack" class="view hidden">
+    <div class="game-container blackjack-mode">
+        
+        <div class="bj-table-container">
+            <div class="bj-table-felt">
+                
+                <div class="bj-hand-area dealer-area">
+                    <div class="bj-score-bubble hidden" id="dealer-score">0</div>
+                    <div class="bj-cards" id="dealer-cards"></div>
+                    <div class="bj-label">DEALER</div>
+                </div>
+
+                <div class="bj-center-decor">
+                    <h2>BLACKJACK</h2>
+                    <p>Pays 3 to 2 • Dealer stands on 17</p>
+                </div>
+
+                <div class="bj-hand-area player-area">
+    <div class="bj-label">JIJ</div>
+    
+    <div id="bj-player-hands-container" class="bj-player-hands-container">
+        <div class="bj-hand active-hand" id="player-hand-0">
+            <div class="bj-cards" id="player-cards-0"></div>
+            <div class="bj-score-bubble hidden" id="player-score-0">0</div>
+        </div>
+        <div class="bj-hand hidden" id="player-hand-1">
+            <div class="bj-cards" id="player-cards-1"></div>
+            <div class="bj-score-bubble hidden" id="player-score-1">0</div>
+        </div>
+    </div>
+    
+    <div class="bj-bet-spot-container">
+        <div class="bj-bet-spot" id="bj-bet-spot">
+            <span id="bj-current-bet-label">Inzet</span>
+        </div>
+        <div id="bj-chip-stack" class="bj-chip-stack"></div>
+    </div>
+    <div class="bj-total-bet-display" id="bj-total-bet-display">Totaal: 0.00 SC</div>
+</div>
+
+                <div id="bj-message-overlay" class="bj-overlay hidden">
+                    <div id="bj-result-title">YOU WIN</div>
+                    <div id="bj-result-amount" class="gold-text"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="bj-controls-wrapper">
+            
+            <div id="bj-bet-controls" class="bj-controls-row">
+                <div class="chip-rack">
+                    <button class="chip chip-1" onclick="bjAddChip(1)">1</button>
+                    <button class="chip chip-5" onclick="bjAddChip(5)">5</button>
+                    <button class="chip chip-10" onclick="bjAddChip(10)">10</button>
+                    <button class="chip chip-25" onclick="bjAddChip(25)">25</button>
+                    <button class="chip chip-100" onclick="bjAddChip(100)">100</button>
+                </div>
+                <div class="bet-actions">
+                    <button class="btn-clear" onclick="bjClearBet()">WIS</button>
+                    <button class="btn-deal" onclick="bjDeal()">DEEL KAARTEN</button>
+                </div>
+            </div>
+
+            <div id="bj-play-controls" class="bj-controls-row hidden">
+                <button class="btn-bj-action btn-double" id="btn-double" onclick="bjDouble()">
+                    <span class="btn-icon">x2</span>
+                    <span class="btn-text">DOUBLE</span>
+                </button>
+                <button class="btn-bj-action btn-hit" onclick="bjHit()">
+                    <span class="btn-icon">+</span>
+                    <span class="btn-text">HIT</span>
+                </button>
+                <button class="btn-bj-action btn-stand" onclick="bjStand()">
+                    <span class="btn-icon">−</span>
+                    <span class="btn-text">STAND</span>
+                </button>
+                <button class="btn-bj-action btn-split" id="btn-split" onclick="bjSplit()" disabled>
+    <span class="btn-icon">⑂</span>
+    <span class="btn-text">SPLIT</span>
+</button>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    </main>
+
+    <script src="main.js"></script>
+    <script src="games/mines.js"></script>
+    <script src="games/crash.js"></script>
+    <script src="games/plinko.js"></script>
+    <script src="games/cases.js"></script>
+    <script src="games/blackjack.js"></script>
+</body>
+</html>
