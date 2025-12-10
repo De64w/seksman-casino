@@ -55,6 +55,10 @@ function switchView(viewName) {
     else document.getElementById('view-home').classList.remove('hidden');
     
     window.scrollTo(0,0);
+
+    if(viewName === 'slots') {
+        if(typeof initSlots === 'function') initSlots();
+    }
 }
 
 // --- ADVERTENTIE SYSTEEM ---
@@ -145,3 +149,5 @@ function finishAds() {
     // Feedback in console (of alert als je wilt)
     console.log(`Ads klaar! +${adState.totalReward} SC`);
 }
+
+if(viewName === 'slots') initSlots();

@@ -1319,3 +1319,202 @@ button {
 @keyframes rainbow { 
     0% { border-color: red; } 33% { border-color: lime; } 66% { border-color: blue; } 100% { border-color: red; }
 }
+
+
+/* --- BOOK OF SEKSMAN SLOTS --- */
+
+.slot-machine-container {
+    background: radial-gradient(circle, #2b1d0e 0%, #0f0a05 100%); /* Donkerbruin/Goud */
+    border: 4px solid #d4af37; /* Goud */
+    border-radius: 15px;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #ffd700;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+}
+
+.slot-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; border-bottom: 2px solid #d4af37; padding-bottom: 10px;
+}
+
+/* HET GRID: 5 kolommen, 3 rijen */
+.slot-frame {
+    background: #000;
+    border: 5px solid #8a6d20;
+    border-radius: 10px;
+    padding: 10px;
+    position: relative;
+    overflow: hidden; /* Belangrijk voor draaiende rollen */
+    height: 300px; /* Hoogte van het speelveld */
+}
+
+.slot-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 Rollen */
+    height: 100%;
+    gap: 5px;
+}
+
+/* Eén Rol (Die verticaal gaat draaien) */
+.slot-reel {
+    display: flex;
+    flex-direction: column;
+    /* We gebruiken transform om te draaien */
+    transition: transform 0.1s linear; 
+}
+
+/* Eén Symbool Vakje */
+.slot-symbol {
+    height: 90px; /* 300px gedeeld door 3 is ongeveer 90 + ruimte */
+    display: flex; justify-content: center; align-items: center;
+    font-size: 3rem; /* Grootte van de Emoji */
+    background: linear-gradient(to bottom, #1a1a1a, #2a2a2a);
+    border: 1px solid #444;
+    border-radius: 4px;
+}
+
+/* Controls */
+.slot-controls {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 20px; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px;
+}
+.bet-adjuster { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; }
+.bet-adjuster button { 
+    background: #d4af37; border: none; font-weight: bold; width: 30px; height: 30px; cursor: pointer; border-radius: 4px; 
+}
+
+.btn-spin {
+    background: linear-gradient(to bottom, #00e701, #008f00);
+    color: white; font-size: 1.5rem; font-weight: 900;
+    padding: 10px 40px; border: none; border-radius: 50px;
+    cursor: pointer; box-shadow: 0 0 15px #00e701;
+    transition: transform 0.1s;
+}
+.btn-spin:active { transform: scale(0.95); }
+.btn-spin:disabled { background: #555; box-shadow: none; cursor: not-allowed; }
+
+/* Kleur voor de Slots knop in het menu */
+.card-slots {
+    background: linear-gradient(135deg, #d4af37 0%, #8a6d20 100%);
+    border: 1px solid #ffd700;
+    color: white;
+}
+.card-slots:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+}
+
+/* --- SLOT WIN EFFECTEN --- */
+
+/* Winnende symbolen krijgen een gouden rand en puls */
+.slot-symbol.winner {
+    border: 3px solid #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), inset 0 0 20px rgba(255, 215, 0, 0.4);
+    animation: win-pulse 1s infinite alternate;
+    z-index: 10; /* Bovenop liggen */
+}
+
+@keyframes win-pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); box-shadow: 0 0 30px #ffd700; }
+}
+
+/* De winst in beeld (grote tekst) */
+.win-overlay-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 10px #000, 0 0 20px gold;
+    pointer-events: none;
+    animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 100;
+}
+
+@keyframes pop-in {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* --- SLOT IMAGES --- */
+
+/* Zorg dat de plaatjes niet uit het vakje breken */
+.slot-img {
+    width: 85%;       /* Vul het vakje grotendeels */
+    height: 85%;
+    object-fit: contain; /* Zorg dat de verhoudingen kloppen */
+    
+    /* Een kleine schaduw zodat ze 'los' komen van de achtergrond */
+    filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5));
+}
+
+/* Mobiel: iets kleiner zodat het past */
+@media (max-width: 600px) {
+    .slot-img {
+        width: 70%;
+        height: 70%;
+    }
+}
+
+/* --- SLOTS KAART FIX --- */
+
+.card-slots {
+    /* De gouden rand */
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+    
+    /* BELANGRIJK: Padding weghalen zodat plaatje rand raakt */
+    padding: 0 !important; 
+    
+    /* Zorg dat alles onder elkaar staat */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Zorg dat plaatje niet buiten de ronde hoeken komt */
+    height: 100%; /* Zelfde hoogte als de rest */
+}
+
+/* 1. Het Plaatje (Boven) */
+.card-slots .card-image-wrapper {
+    height: 140px; /* Vaste hoogte voor het plaatje */
+    width: 100%;
+    background: #000; /* Zwart achtergrondje mocht plaatje niet laden */
+}
+
+.card-slots img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* DIT FIKST HET UITREKKEN! */
+    transition: transform 0.5s;
+}
+
+/* Zoom effectje */
+.card-slots:hover img {
+    transform: scale(1.1);
+}
+
+/* 2. De Tekst (Onder) */
+.card-slots .card-content {
+    /* Hier komt de gouden kleur */
+    background: linear-gradient(135deg, #d4af37 0%, #8a6d20 100%);
+    color: white;
+    padding: 15px; /* Ruimte om de tekst */
+    flex-grow: 1;  /* Vul de rest van de kaart */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-slots h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.card-slots p {
+    margin: 5px 0 0 0;
+    opacity: 0.9;
+}
