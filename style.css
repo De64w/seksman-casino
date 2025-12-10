@@ -358,7 +358,23 @@ button {
 }
 
 /* Icons (emoji for now, SVGs in real prod) */
-.icon-gem::after { content: "💎"; }
+.mine-tile.icon-gem {
+    /* We gebruiken GEEN ::after meer, maar zetten het plaatje direct op de tegel */
+    
+    /* Het pad naar je plaatje (let op de exacte bestandsnaam!) */
+    background-image: url('images/icon.diamond.png');
+
+    /* Zorg dat het plaatje in het midden staat en niet herhaalt */
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* De grootte van het plaatje. 'contain' zorgt dat hij past. */
+    background-size: 70%; /* Pas dit percentage aan als hij te groot/klein is */
+
+    /* Optioneel: Geef het vakje een achtergrondkleur en rand bij winst */
+    background-color: #1a3c2f; 
+    border-color: #00e701;
+}
 .icon-bomb::after { content: "💣"; }
 
 /* Animation voor winst */
@@ -1026,4 +1042,50 @@ button {
         height: 60px;
         font-size: 1.5rem;
     }
+}
+/* Voeg dit toe aan style.css */
+
+/* Algemene instelling voor plaatjes op kaarten */
+.game-card {
+    /* Zorg dat het plaatje de hele kaart bedekt */
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Specifieke plaatjes per game */
+.card-mines {
+    background-image: url('images/card-mines.png');
+
+    background-size: 100% 100%;
+}
+
+.card-crash {
+    background-image: url('images/card-crash.png');
+}
+
+.card-plinko {
+    background-image: url('images/card-plinko.png');
+
+    background-size: 130% 110%;
+}
+
+.card-blackjack {
+    background-image: url('images/card-blackjack.png');
+}
+
+.card-cases {
+    background-image: url('images/card-cases.png');
+
+    background-size: 100% 100%;
+}
+
+/* Zorg dat de tekst nog leesbaar is over het plaatje heen */
+.card-content {
+    background: linear-gradient(to top, rgba(15, 33, 46, 1) 0%, rgba(15, 33, 46, 0.4) 100%);
+    width: 100%;
+    height: 100%; /* Vul de hele kaart */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Tekst onderin */
 }
