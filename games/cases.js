@@ -45,15 +45,34 @@ const CASE_TYPES = [
     },
     {
         id: 'meme',
-        name: 'Meme Case',
+        name: 'Brainrot Case',
         price: 5.00,
-        icon: '🐸',
+        icon: '<img src="images/meme-case.png" class="case-menu-icon">',
         // Evenwichtig
         items: [
-            { name: 'Sad Frog', val: 1.00, prob: 40, icon: '🐸' },
-            { name: 'Doge', val: 5.00, prob: 40, icon: '🐶' },
-            { name: 'Rocket', val: 15.00, prob: 15, icon: '🚀' },
-            { name: 'Moon', val: 100.00, prob: 5, icon: '🌕' }
+            { name: 'Sad Frog', 
+                val: 1.00, 
+                prob: 40, 
+                icon: '<img src="images/crocro.png" class="case-item-img">' 
+            },
+            { 
+                name: 'Doge', 
+                val: 5.00, 
+                prob: 40, 
+                icon: '<img src="images/brrbrr.png" class="case-item-img">' 
+            },
+            { 
+                name: 'Rocket', 
+                val: 15.00, 
+                prob: 15, 
+                icon: '<img src="images/bcapu.png" class="case-item-img">' 
+            },
+            { 
+                name: 'Moon', 
+                val: 100.00, 
+                prob: 5, 
+                icon: '<img src="images/tuntuntun.png" class="case-item-img">' 
+            }
         ]
     }
 ];
@@ -100,7 +119,7 @@ function casesRenderSelection() {
     else casesGame.selectedCases.forEach((c, idx) => {
         const thumb = document.createElement('div');
         thumb.className = 'selected-case-thumb';
-        thumb.innerText = c.icon;
+        thumb.innerHTML = c.icon;
         thumb.onclick = () => casesRemove(idx);
         bar.appendChild(thumb);
     });
@@ -286,7 +305,7 @@ function createReelStrip(caseType, winningItem) {
         }
 
         card.className = 'reel-card';
-        card.innerText = itemToShow.icon;
+        card.innerHTML = itemToShow.icon;
         
         if(itemToShow.prob < 5) card.classList.add('legendary');
         else if(itemToShow.prob < 20) card.classList.add('rare');

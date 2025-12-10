@@ -1183,3 +1183,31 @@ button {
 .ad-loader-bar { width: 80%; max-width: 600px; height: 5px; background: #333; }
 #ad-progress { width: 0%; height: 100%; background: #00e701; transition: width 0.2s; }
 .hidden { display: none !important; }
+
+/* --- CASES PLAATJES FIX --- */
+
+/* Dit zorgt dat de plaatjes niet uit de rol breken */
+.case-item-img {
+    width: 60px;       /* Of 50px als ze te groot zijn */
+    height: 60px;
+    object-fit: contain; /* Zorgt dat het hele plaatje zichtbaar blijft */
+    
+    /* Een kleine schaduw om ze 'los' te laten komen van de achtergrond */
+    filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5));
+}
+
+/* Mobiele aanpassing (optioneel, voor als het op telefoon te groot is) */
+@media (max-width: 600px) {
+    .case-item-img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* CSS voor het plaatje van de kist in het hoofdmenu */
+.case-menu-icon {
+    width: 80px;  /* Pas dit aan als ze te groot/klein zijn */
+    height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3)); /* Mooie schaduw eronder */
+}
