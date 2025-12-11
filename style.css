@@ -1740,3 +1740,145 @@ button {
     left: 125%; /* Schiet naar rechts buiten beeld */
     transition: left 0.7s; /* Snelheid van de flits */
 }
+
+/* =========================================
+   MOBILE RESPONSIVENESS (TELEFOON MODUS)
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    /* 1. Algemene Layout */
+    #app-container {
+        padding: 15px; /* Minder witruimte aan de randen */
+    }
+
+    /* 2. De Header */
+    .hero h1 {
+        font-size: 2rem; /* Iets kleiner font voor de titel */
+    }
+    
+    .navbar {
+        padding: 10px 15px; /* Compactere balk */
+    }
+    
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    /* 3. Game Containers (Zet alles onder elkaar) */
+    .game-container {
+        flex-direction: column-reverse; /* Controls onder, Spel boven (handig voor duimen!) */
+        gap: 20px;
+    }
+    
+    .game-sidebar {
+        width: 100%; /* Knoppenbalk pakt volle breedte */
+        margin-top: 10px;
+    }
+
+    /* 4. Book of Seksman (Slots) Specifiek */
+    .slot-machine-container {
+        width: 100%; /* Vul het scherm */
+        padding: 10px;
+        min-width: 0; /* Voorkomt uitrekken */
+    }
+    
+    .slot-symbol {
+        width: 17vw; /* Symbolen schalen mee met schermbreedte */
+        height: 17vw; /* Zodat ze vierkant blijven */
+        max-width: 60px;
+        max-height: 60px;
+    }
+    
+    .slot-controls {
+        flex-direction: column; /* Inzet en Spin onder elkaar */
+        gap: 15px;
+    }
+    
+    .bet-adjuster {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .btn-spin {
+        width: 100%; /* Grote knop om makkelijk te rammen */
+        padding: 15px;
+        font-size: 1.2rem;
+    }
+
+    /* 5. Mines & Andere Games */
+    .mines-grid {
+        gap: 5px; /* Tegels dichter op elkaar */
+    }
+    
+    .mine-tile {
+        font-size: 1.5rem;
+    }
+    
+    /* Grote knoppen voor acties */
+    .btn-large {
+        padding: 15px;
+        font-size: 1.2rem;
+    }
+
+    /* =========================================
+       SPECIFIEK VOOR BLACKJACK MOBIEL
+       ========================================= */
+    
+    /* De container van de actieknoppen (Hit, Stand, etc.) */
+    #bj-play-controls {
+        display: grid;               /* Gebruik een rooster in plaats van een rij/kolom */
+        grid-template-columns: 1fr 1fr; /* Maak 2 kolommen van gelijke breedte */
+        gap: 10px;                   /* Ruimte tussen de knoppen */
+        width: 100%;                 /* Gebruik de volle breedte */
+        margin-top: 15px;
+    }
+
+    /* De knoppen zelf */
+    .btn-bj-action {
+        width: 100%;       /* Vul de cel van het rooster */
+        padding: 12px 5px; /* Goed formaat voor je duim */
+        
+        /* Zorg dat het icoon netjes boven de tekst staat */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1 / 1; /* Maakt ze mooi vierkant */
+    }
+
+    /* Het icoontje iets groter */
+    .btn-icon {
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+    }
+
+    /* De tekst iets kleiner zodat het past */
+    .btn-text {
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    /* Ook de fiches-rij en de 'Deel/Wis' knoppen netter maken */
+    #bj-bet-controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .chip-rack {
+        justify-content: center; /* Fiches in het midden */
+        flex-wrap: wrap;         /* Als het niet past, ga naar de volgende regel */
+    }
+    
+    .bet-actions {
+        display: grid;
+        grid-template-columns: 1fr 2fr; /* Deel knop is 2x zo breed als Wis */
+        gap: 10px;
+        width: 100%;
+    }
+
+    .btn-deal, .btn-clear {
+        width: 100%;
+        padding: 15px;
+    }
+}
