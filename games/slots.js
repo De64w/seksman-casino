@@ -1,4 +1,4 @@
-/* games/slots.js - BOOK OF SEKSMAN (MET CLAIM POPUP) */
+/* games/slots.js - BOOK OF SEKSMAN (LOOPING BONUS AUDIO) */
 
 /* --- 1. CONFIGURATIE --- */
 const SLOT_SYMBOLS = [
@@ -31,7 +31,7 @@ let freeSpins = 0;
 let totalBonusSpins = 10;
 let isInBonus = false;
 let specialSymbol = null; 
-let bonusSessionTotal = 0; // Houdt totaal winst bij tijdens bonus
+let bonusSessionTotal = 0; 
 
 /* --- 2. SETUP & UI --- */
 function initSlots() {
@@ -65,23 +65,17 @@ function updateSlotUI() {
 
     if(isInBonus) {
         if(controlsDiv) controlsDiv.classList.add('hidden-visually');
-        
         const currentSpinNum = Math.min((totalBonusSpins - freeSpins) + 1, totalBonusSpins);
         const smallIcon = specialSymbol ? specialSymbol.icon.replace('class="slot-img"', 'style="width:25px; vertical-align:middle;"') : '?';
-        
         if(statusEl) {
             statusEl.innerHTML = `<span style="color:#ffd700;">BONUS SPIN ${currentSpinNum} / ${totalBonusSpins}</span> &nbsp;|&nbsp; Speciaal: ${smallIcon} &nbsp;|&nbsp; Winst: ${bonusSessionTotal.toFixed(2)}`;
         }
-        
     } else {
         if(controlsDiv) controlsDiv.classList.remove('hidden-visually');
-        
         if(statusEl && !isSpinning && !statusEl.innerText.includes('GEWONNEN')) {
             statusEl.innerText = "Druk op SPIN om te beginnen!";
         }
-        if(spinBtn) {
-            spinBtn.disabled = isSpinning;
-        }
+        if(spinBtn) spinBtn.disabled = isSpinning;
     }
 }
 
@@ -103,6 +97,10 @@ function getRandomSymbol() {
     return SLOT_SYMBOLS[0];
 }
 
+function forceTriggerBonus() {
+    if(isSpinning || isInBonus) return;
+    triggerBonusReveal();
+}
 
 /* --- 3. SPIN LOGICA --- */
 async function spinSlots() {
@@ -141,35 +139,32 @@ async function spinSlots() {
 
     let spinWin = checkWins();
 
-    // Check Expanding (Alleen in bonus)
     if(isInBonus && specialSymbol) {
         const expandWin = checkExpandingWins();
         if(expandWin > 0) {
             await new Promise(r => setTimeout(r, 600));
             spinWin += expandWin;
+            if(typeof playSound === 'function') playSound('win');
+            
             document.getElementById('slot-status').innerHTML = `<span style="color:#ffd700;">✨ EXPANDING WINST! +${expandWin.toFixed(2)} ✨</span>`;
             await new Promise(r => setTimeout(r, 2000));
         }
     }
 
-    // Winst verwerking
     if(spinWin > 0) {
         const winMsg = `GEWONNEN! +${spinWin.toFixed(2)} SC`;
         document.getElementById('slot-status').innerText = winMsg;
         addBalance(spinWin);
         
-        // Als we in bonus zijn, tel op bij sessie totaal
-        if(isInBonus) {
-            bonusSessionTotal += spinWin;
-        }
+        if(typeof playSound === 'function') playSound('win');
+        
+        if(isInBonus) bonusSessionTotal += spinWin;
     } else if (!isInBonus) {
         document.getElementById('slot-status').innerText = "Helaas, probeer het nog eens.";
     }
 
-    // CHECK EINDE BONUS
     if(isInBonus && freeSpins <= 0) {
         await new Promise(r => setTimeout(r, 1500));
-        // IN PLAATS VAN ALERT, TOON NU HET EIND SCHERM
         showBonusSummary();
     }
 
@@ -212,7 +207,6 @@ function spinReel(reelIndex, delay, targetSymbols) {
 
 function checkWins() {
     let totalWin = 0;
-    
     let bookCount = 0;
     for(let c=0; c<5; c++) {
         for(let r=0; r<3; r++) {
@@ -222,8 +216,13 @@ function checkWins() {
 
     if(bookCount >= 3) {
         if(!isInBonus) {
+            // Normaal spel -> Bonus Trigger
             setTimeout(() => triggerBonusReveal(), 500);
         } else {
+            // Retrigger -> GEEN EXTRA MUZIEK STARTEN (Hij loopt al!)
+            // We spelen alleen een 'win' geluidje voor het effect
+            if(typeof playSound === 'function') playSound('win');
+
             freeSpins += 10;
             totalBonusSpins += 10;
             updateSlotUI();
@@ -293,9 +292,10 @@ function checkExpandingWins() {
     return 0;
 }
 
-/* --- 4. BONUS UI & LOGIC --- */
-
 function triggerBonusReveal() {
+    // START MUZIEK HIER!
+    if(typeof startBonusMusic === 'function') startBonusMusic();
+
     const overlay = document.getElementById('bonus-reveal-overlay');
     const iconContainer = document.getElementById('book-reveal-icon');
     const startBtn = document.getElementById('btn-start-bonus');
@@ -311,10 +311,16 @@ function triggerBonusReveal() {
     const interval = setInterval(() => {
         counter++;
         iconContainer.innerHTML = possible[Math.floor(Math.random() * possible.length)].icon;
+        
+        if(typeof playSound === 'function') playSound('click');
+
         if(counter >= 20) {
             clearInterval(interval);
             iconContainer.className = 'reveal-icon chosen-symbol-effect';
             iconContainer.innerHTML = specialSymbol.icon;
+            
+            if(typeof playSound === 'function') playSound('win');
+
             setTimeout(() => {
                 startBtn.classList.remove('hidden');
                 startBtn.innerText = "START AUTO SPINS";
@@ -331,7 +337,7 @@ async function startFreeSpinsSession() {
     isInBonus = true;
     freeSpins = 10;
     totalBonusSpins = 10;
-    bonusSessionTotal = 0; // RESET TOTAAL WINST
+    bonusSessionTotal = 0;
     
     updateSlotUI();
     document.querySelector('.slot-machine-container').style.boxShadow = "0 0 50px #ff0000"; 
@@ -347,29 +353,23 @@ async function autoPlayBonus() {
     }
 }
 
-/* --- 5. EIND SCHERM LOGICA (NIEUW) --- */
-
 function showBonusSummary() {
     const overlay = document.getElementById('bonus-end-overlay');
     const winDisplay = document.getElementById('bonus-total-win-display');
-    
-    if(winDisplay) {
-        winDisplay.innerText = bonusSessionTotal.toFixed(2) + " SC";
-    }
-    
+    if(winDisplay) winDisplay.innerText = bonusSessionTotal.toFixed(2) + " SC";
     overlay.classList.remove('hidden');
     setTimeout(() => overlay.classList.add('active'), 50);
 }
 
 function claimBonusWins() {
+    // STOP MUZIEK HIER!
+    if(typeof stopBonusMusic === 'function') stopBonusMusic();
+
     const overlay = document.getElementById('bonus-end-overlay');
     overlay.classList.remove('active');
     setTimeout(() => overlay.classList.add('hidden'), 500);
-    
-    // Reset alles naar normaal
     isInBonus = false;
     specialSymbol = null;
     document.querySelector('.slot-machine-container').style.boxShadow = "0 0 30px rgba(212, 175, 55, 0.2)"; 
-    
-    updateSlotUI(); // Knoppen komen terug
+    updateSlotUI();
 }
