@@ -108,7 +108,9 @@
                     <div id="mines-grid" class="mines-grid"></div>
                 </div>
             </div>
-        </div> <div id="view-slots" class="view hidden">
+        </div>
+
+        <div id="view-slots" class="view hidden">
             <div class="game-container slot-machine-container">
                 
                 <div class="slot-header">
@@ -125,10 +127,6 @@
                     <div class="slot-paylines" id="slot-paylines"></div>
                 </div>
 
-                <div class="slot-controls">
-                    <div style="position: absolute; top: -25px; right: 0;">
-                        <button onclick="forceTriggerBonus()" style="background:red; color:white; border:none; padding:2px 5px; cursor:pointer; font-size:0.7rem;">⚡ DEBUG BONUS</button>
-                    </div>
 
                     <div class="control-group">
                         <label style="color:#ffd700; font-weight:bold; margin-right:10px;">INZET</label>
@@ -162,6 +160,21 @@
                 </div>
                 <button id="btn-start-bonus" class="btn-primary btn-large hidden" onclick="startFreeSpinsSession()">
                     START AUTO SPINS
+                </button>
+            </div>
+        </div>
+
+        <div id="bonus-end-overlay" class="view-overlay hidden">
+            <div class="book-modal">
+                <div class="book-header">
+                    <h2>BONUS COMPLEET</h2>
+                    <p>Totaal gewonnen:</p>
+                </div>
+                <div class="book-content">
+                    <div id="bonus-total-win-display" class="bonus-win-amount">0.00 SC</div>
+                </div>
+                <button id="btn-claim-bonus" class="btn-primary btn-large" onclick="claimBonusWins()">
+                    CLAIM WINST
                 </button>
             </div>
         </div>

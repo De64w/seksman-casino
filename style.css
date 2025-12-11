@@ -1620,3 +1620,20 @@ button {
     .bet-adjuster, .spin-group { width: 100%; justify-content: center; }
     .btn-spin { width: 100%; }
 }
+
+/* --- BONUS END SCREEN --- */
+
+.bonus-win-amount {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #00e701; /* Geld Groen */
+    text-shadow: 0 0 20px rgba(0, 231, 1, 0.4);
+    margin: 20px 0;
+    font-family: monospace; /* Ziet eruit als een teller */
+    animation: pulse-green 1s infinite alternate;
+}
+
+@keyframes pulse-green {
+    from { transform: scale(1); text-shadow: 0 0 20px rgba(0, 231, 1, 0.4); }
+    to { transform: scale(1.1); text-shadow: 0 0 40px rgba(0, 231, 1, 0.8); }
+}

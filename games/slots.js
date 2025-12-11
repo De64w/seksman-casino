@@ -1,4 +1,4 @@
-/* games/slots.js - BOOK OF SEKSMAN (FIXED COUNTER) */
+/* games/slots.js - BOOK OF SEKSMAN (MET CLAIM POPUP) */
 
 /* --- 1. CONFIGURATIE --- */
 const SLOT_SYMBOLS = [
@@ -31,6 +31,7 @@ let freeSpins = 0;
 let totalBonusSpins = 10;
 let isInBonus = false;
 let specialSymbol = null; 
+let bonusSessionTotal = 0; // Houdt totaal winst bij tijdens bonus
 
 /* --- 2. SETUP & UI --- */
 function initSlots() {
@@ -65,11 +66,12 @@ function updateSlotUI() {
     if(isInBonus) {
         if(controlsDiv) controlsDiv.classList.add('hidden-visually');
         
-        // FIX: Math.min zorgt dat de teller nooit boven de 10 uitkomt (geen 11/10 meer!)
         const currentSpinNum = Math.min((totalBonusSpins - freeSpins) + 1, totalBonusSpins);
-        
         const smallIcon = specialSymbol ? specialSymbol.icon.replace('class="slot-img"', 'style="width:25px; vertical-align:middle;"') : '?';
-        if(statusEl) statusEl.innerHTML = `<span style="color:#ffd700;">BONUS SPIN ${currentSpinNum} / ${totalBonusSpins}</span> &nbsp;|&nbsp; Speciaal: ${smallIcon}`;
+        
+        if(statusEl) {
+            statusEl.innerHTML = `<span style="color:#ffd700;">BONUS SPIN ${currentSpinNum} / ${totalBonusSpins}</span> &nbsp;|&nbsp; Speciaal: ${smallIcon} &nbsp;|&nbsp; Winst: ${bonusSessionTotal.toFixed(2)}`;
+        }
         
     } else {
         if(controlsDiv) controlsDiv.classList.remove('hidden-visually');
@@ -101,10 +103,6 @@ function getRandomSymbol() {
     return SLOT_SYMBOLS[0];
 }
 
-function forceTriggerBonus() {
-    if(isSpinning || isInBonus) return;
-    triggerBonusReveal();
-}
 
 /* --- 3. SPIN LOGICA --- */
 async function spinSlots() {
@@ -143,6 +141,7 @@ async function spinSlots() {
 
     let spinWin = checkWins();
 
+    // Check Expanding (Alleen in bonus)
     if(isInBonus && specialSymbol) {
         const expandWin = checkExpandingWins();
         if(expandWin > 0) {
@@ -153,20 +152,25 @@ async function spinSlots() {
         }
     }
 
+    // Winst verwerking
     if(spinWin > 0) {
         const winMsg = `GEWONNEN! +${spinWin.toFixed(2)} SC`;
         document.getElementById('slot-status').innerText = winMsg;
         addBalance(spinWin);
+        
+        // Als we in bonus zijn, tel op bij sessie totaal
+        if(isInBonus) {
+            bonusSessionTotal += spinWin;
+        }
     } else if (!isInBonus) {
         document.getElementById('slot-status').innerText = "Helaas, probeer het nog eens.";
     }
 
+    // CHECK EINDE BONUS
     if(isInBonus && freeSpins <= 0) {
         await new Promise(r => setTimeout(r, 1500));
-        isInBonus = false;
-        specialSymbol = null;
-        alert("Bonus spel afgelopen!");
-        updateSlotUI();
+        // IN PLAATS VAN ALERT, TOON NU HET EIND SCHERM
+        showBonusSummary();
     }
 
     isSpinning = false;
@@ -208,6 +212,7 @@ function spinReel(reelIndex, delay, targetSymbols) {
 
 function checkWins() {
     let totalWin = 0;
+    
     let bookCount = 0;
     for(let c=0; c<5; c++) {
         for(let r=0; r<3; r++) {
@@ -288,6 +293,8 @@ function checkExpandingWins() {
     return 0;
 }
 
+/* --- 4. BONUS UI & LOGIC --- */
+
 function triggerBonusReveal() {
     const overlay = document.getElementById('bonus-reveal-overlay');
     const iconContainer = document.getElementById('book-reveal-icon');
@@ -320,10 +327,15 @@ async function startFreeSpinsSession() {
     const overlay = document.getElementById('bonus-reveal-overlay');
     overlay.classList.remove('active');
     setTimeout(() => overlay.classList.add('hidden'), 500);
+    
     isInBonus = true;
     freeSpins = 10;
     totalBonusSpins = 10;
+    bonusSessionTotal = 0; // RESET TOTAAL WINST
+    
     updateSlotUI();
+    document.querySelector('.slot-machine-container').style.boxShadow = "0 0 50px #ff0000"; 
+    
     await autoPlayBonus();
 }
 
@@ -333,4 +345,31 @@ async function autoPlayBonus() {
         await spinSlots();
         await new Promise(r => setTimeout(r, 1500));
     }
+}
+
+/* --- 5. EIND SCHERM LOGICA (NIEUW) --- */
+
+function showBonusSummary() {
+    const overlay = document.getElementById('bonus-end-overlay');
+    const winDisplay = document.getElementById('bonus-total-win-display');
+    
+    if(winDisplay) {
+        winDisplay.innerText = bonusSessionTotal.toFixed(2) + " SC";
+    }
+    
+    overlay.classList.remove('hidden');
+    setTimeout(() => overlay.classList.add('active'), 50);
+}
+
+function claimBonusWins() {
+    const overlay = document.getElementById('bonus-end-overlay');
+    overlay.classList.remove('active');
+    setTimeout(() => overlay.classList.add('hidden'), 500);
+    
+    // Reset alles naar normaal
+    isInBonus = false;
+    specialSymbol = null;
+    document.querySelector('.slot-machine-container').style.boxShadow = "0 0 30px rgba(212, 175, 55, 0.2)"; 
+    
+    updateSlotUI(); // Knoppen komen terug
 }
