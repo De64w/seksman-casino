@@ -1570,12 +1570,16 @@ button {
 .btn-spin:disabled { background: #555; border-color: #333; box-shadow: none; cursor: not-allowed; }
 
 /* --- 5. HOMEPAGE CARD STYLING --- */
+/* --- 5. HOMEPAGE CARD STYLING --- */
 .card-slots {
     position: relative;
     border: 2px solid #ffd700;
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
     overflow: hidden;
-    height: 100%;
+    
+    /* HIER ZAT DE FOUT: */
+    height: 250px; /* Was 100%, moet 250px zijn! */
+    
     display: flex;
     padding: 0 !important;
 }
