@@ -11,7 +11,7 @@ const SLOT_SYMBOLS = [
     { id: 'H2', weight: 60, icon: '<img src="images/slots/h2.png" class="slot-img">', payout: {2: 0.5, 3: 3, 4: 10, 5: 75} }, 
     { id: 'H3', weight: 40, icon: '<img src="images/slots/h3.png" class="slot-img">', payout: {2: 0.5, 3: 4, 4: 40, 5: 200} }, 
     { id: 'H4', weight: 20, icon: '<img src="images/slots/h4.png" class="slot-img">', payout: {2: 1, 3: 10, 4: 100, 5: 500} }, 
-    { id: 'BOOK', weight: 15, icon: '<img src="images/slots/book.png" class="slot-img">', payout: {3: 2, 4: 20, 5: 200} } 
+    { id: 'BOOK', weight: 20, icon: '<img src="images/slots/book.png" class="slot-img">', payout: {3: 2, 4: 20, 5: 200} } 
 ];
 
 const PAYLINES = [
