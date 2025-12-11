@@ -48,7 +48,7 @@
 
                 <div class="game-card card-slots" onclick="switchView('slots')">
                     <div class="card-image-bg">
-                        <img src="images/background/slots-cover.png" alt="Slots cover">
+                        <img src="images/background/slots-cover.png" alt="Slots Cover">
                     </div>
                     <div class="card-overlay">
                         <h2>Book of Seksman</h2>
@@ -108,24 +108,30 @@
                     <div id="mines-grid" class="mines-grid"></div>
                 </div>
             </div>
-        </div>
-
-        <div id="view-slots" class="view hidden">
+        </div> <div id="view-slots" class="view hidden">
             <div class="game-container slot-machine-container">
+                
                 <div class="slot-header">
                     <h2>BOOK OF SEKSMAN</h2>
-                    <div class="slot-balance">Saldo: <span id="slot-balance-display">0.00</span> SC</div>
+                    <div class="slot-balance">
+                        <span id="slot-balance-display">0.00</span> SC
+                    </div>
                 </div>
 
+                <div id="slot-status" class="slot-status-bar">Druk op SPIN om te beginnen!</div>
+
                 <div class="slot-frame">
-                    <div class="slot-grid" id="slot-grid">
-                        </div>
+                    <div class="slot-grid" id="slot-grid"></div>
                     <div class="slot-paylines" id="slot-paylines"></div>
                 </div>
 
                 <div class="slot-controls">
+                    <div style="position: absolute; top: -25px; right: 0;">
+                        <button onclick="forceTriggerBonus()" style="background:red; color:white; border:none; padding:2px 5px; cursor:pointer; font-size:0.7rem;">⚡ DEBUG BONUS</button>
+                    </div>
+
                     <div class="control-group">
-                        <label>Inzet</label>
+                        <label style="color:#ffd700; font-weight:bold; margin-right:10px;">INZET</label>
                         <div class="bet-adjuster">
                             <button onclick="adjustSlotBet(-0.10)">-</button>
                             <span id="slot-bet-amount">0.50</span>
@@ -138,8 +144,25 @@
                     </div>
                 </div>
                 
-                <div id="slot-status">Druk op SPIN om te beginnen!</div>
                 <button class="btn-back" onclick="switchView('home')">Terug</button>
+            </div>
+        </div>
+
+        <div id="bonus-reveal-overlay" class="view-overlay hidden">
+            <div class="book-modal">
+                <div class="book-header">
+                    <h2>GEFELICITEERD!</h2>
+                    <p>Je wint 10 Free Spins</p>
+                </div>
+                <div class="book-content">
+                    <p>Speciaal symbool wordt gekozen...</p>
+                    <div class="book-symbol-reveal">
+                        <div id="book-reveal-icon" class="reveal-icon">❓</div>
+                    </div>
+                </div>
+                <button id="btn-start-bonus" class="btn-primary btn-large hidden" onclick="startFreeSpinsSession()">
+                    START AUTO SPINS
+                </button>
             </div>
         </div>
 
@@ -237,7 +260,6 @@
 
         <div id="view-cases" class="view hidden">
             <div class="game-container cases-mode">
-                
                 <div id="cases-setup" class="cases-setup-wrapper">
                     <div class="cases-controls-header">
                         <div class="cases-mode-select">
@@ -248,21 +270,17 @@
                                 <option value="4">1 vs 3 (4 Spelers)</option>
                             </select>
                         </div>
-                        
                         <div class="cases-cost-display">
                             <span>Totale Kosten:</span>
                             <strong id="cb-total-cost" class="currency">0.00 SC</strong>
                         </div>
-
                         <button id="cb-start-btn" class="btn-primary" onclick="casesStartBattle()">
                             Maak Battle
                         </button>
                     </div>
-
                     <div class="cases-selection-bar" id="cb-selection-bar">
                         <div class="empty-msg">Klik op cases hieronder om ze toe te voegen</div>
                     </div>
-
                     <div class="cases-market-grid" id="cb-market-grid"></div>
                 </div>
 
@@ -271,7 +289,6 @@
                         <button class="btn-back" onclick="casesReset()">← Nieuwe Battle</button>
                         <div class="arena-status" id="arena-status">Ronde 1 / 5</div>
                     </div>
-
                     <div class="battle-columns" id="cb-battle-columns"></div>
                     <div id="cb-winner-banner" class="hidden"></div>
                 </div>
@@ -280,7 +297,6 @@
 
         <div id="view-blackjack" class="view hidden">
             <div class="game-container blackjack-mode">
-                
                 <div class="bj-table-container">
                     <div class="bj-table-felt">
                         <div class="bj-hand-area dealer-area">
@@ -288,12 +304,10 @@
                             <div class="bj-cards" id="dealer-cards"></div>
                             <div class="bj-label">DEALER</div>
                         </div>
-
                         <div class="bj-center-decor">
                             <h2>BLACKJACK</h2>
                             <p>Pays 3 to 2 • Dealer stands on 17</p>
                         </div>
-
                         <div class="bj-hand-area player-area">
                             <div class="bj-label">JIJ</div>
                             <div id="bj-player-hands-container" class="bj-player-hands-container">
@@ -306,7 +320,6 @@
                                     <div class="bj-score-bubble hidden" id="player-score-1">0</div>
                                 </div>
                             </div>
-                            
                             <div class="bj-bet-spot-container">
                                 <div class="bj-bet-spot" id="bj-bet-spot">
                                     <span id="bj-current-bet-label">Inzet</span>
@@ -315,7 +328,6 @@
                             </div>
                             <div class="bj-total-bet-display" id="bj-total-bet-display">Totaal: 0.00 SC</div>
                         </div>
-
                         <div id="bj-message-overlay" class="bj-overlay hidden">
                             <div id="bj-result-title">YOU WIN</div>
                             <div id="bj-result-amount" class="gold-text"></div>
@@ -337,7 +349,6 @@
                             <button class="btn-deal" onclick="bjDeal()">DEEL KAARTEN</button>
                         </div>
                     </div>
-
                     <div id="bj-play-controls" class="bj-controls-row hidden">
                         <button class="btn-bj-action btn-double" id="btn-double" onclick="bjDouble()">
                             <span class="btn-icon">x2</span>
@@ -366,7 +377,6 @@
                     <h2>Saldo Opwaarderen</h2>
                     <button class="btn-close" onclick="closeAdMenu()">✕</button>
                 </div>
-                
                 <div class="ad-options-grid">
                     <div class="ad-card bg-shop-1" onclick="startAdSequence(1)">
                         <div class="card-gradient-overlay">
@@ -374,7 +384,6 @@
                             <div class="ad-desc">Bekijk 1 video</div>
                         </div>
                     </div>
-
                     <div class="ad-card bg-shop-2 popular" onclick="startAdSequence(2)">
                         <div class="badge">POPULAIR (+25%)</div>
                         <div class="card-gradient-overlay">
@@ -382,7 +391,6 @@
                             <div class="ad-desc">Bekijk 2 video's</div>
                         </div>
                     </div>
-
                     <div class="ad-card bg-shop-3 best" onclick="startAdSequence(3)">
                         <div class="badge">BESTE DEAL (+50%)</div>
                         <div class="card-gradient-overlay">

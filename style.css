@@ -1321,147 +1321,182 @@ button {
 }
 
 
-/* --- BOOK OF SEKSMAN SLOTS --- */
+/* =========================================
+   BOOK OF SEKSMAN - DEFINITIVE STYLING
+   ========================================= */
 
+/* --- 1. GAME CONTAINER LAYOUT --- */
 .slot-machine-container {
-    background: radial-gradient(circle, #2b1d0e 0%, #0f0a05 100%); /* Donkerbruin/Goud */
-    border: 4px solid #d4af37; /* Goud */
+    background: radial-gradient(circle, #2b1d0e 0%, #0f0a05 100%);
+    border: 4px solid #d4af37;
     border-radius: 15px;
     padding: 20px;
-    max-width: 800px;
+    
+    /* COMPACT LAYOUT FIX */
+    width: fit-content;
+    min-width: 350px;
+    max-width: 95vw;
     margin: 0 auto;
+    
     color: #ffd700;
     box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+/* --- 2. HEADER & STATUS --- */
 .slot-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 20px; border-bottom: 2px solid #d4af37; padding-bottom: 10px;
+    text-align: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    padding-bottom: 10px;
+    width: 100%;
 }
 
-/* HET GRID: 5 kolommen, 3 rijen */
+.slot-header h2 {
+    margin: 0 0 5px 0;
+    font-size: 1.8rem;
+    text-shadow: 0 2px 0 #000;
+    text-transform: uppercase;
+}
+
+.slot-balance {
+    font-size: 1.2rem;
+    color: #00e701;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+/* Status Bar (Blue Bar Location) */
+.slot-status-bar {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #d4af37;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    min-height: 24px;
+    box-sizing: border-box;
+}
+
+/* --- 3. THE REELS (GRID) --- */
 .slot-frame {
     background: #000;
     border: 5px solid #8a6d20;
     border-radius: 10px;
-    padding: 10px;
+    padding: 5px;
     position: relative;
-    overflow: hidden; /* Belangrijk voor draaiende rollen */
-    height: 300px; /* Hoogte van het speelveld */
+    overflow: hidden;
 }
 
 .slot-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 Rollen */
-    height: 100%;
+    grid-template-columns: repeat(5, 1fr);
     gap: 5px;
 }
 
-/* Eén Rol (Die verticaal gaat draaien) */
 .slot-reel {
     display: flex;
     flex-direction: column;
-    /* We gebruiken transform om te draaien */
-    transition: transform 0.1s linear; 
 }
 
-/* Eén Symbool Vakje */
+/* Individual Symbol Box */
 .slot-symbol {
-    height: 90px; /* 300px gedeeld door 3 is ongeveer 90 + ruimte */
-    display: flex; justify-content: center; align-items: center;
-    font-size: 3rem; /* Grootte van de Emoji */
+    width: 80px;
+    height: 80px;
     background: linear-gradient(to bottom, #1a1a1a, #2a2a2a);
     border: 1px solid #444;
     border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
-/* Controls */
-.slot-controls {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-top: 20px; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px;
-}
-.bet-adjuster { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; }
-.bet-adjuster button { 
-    background: #d4af37; border: none; font-weight: bold; width: 30px; height: 30px; cursor: pointer; border-radius: 4px; 
-}
-
-.btn-spin {
-    background: linear-gradient(to bottom, #00e701, #008f00);
-    color: white; font-size: 1.5rem; font-weight: 900;
-    padding: 10px 40px; border: none; border-radius: 50px;
-    cursor: pointer; box-shadow: 0 0 15px #00e701;
-    transition: transform 0.1s;
-}
-.btn-spin:active { transform: scale(0.95); }
-.btn-spin:disabled { background: #555; box-shadow: none; cursor: not-allowed; }
-
-/* Kleur voor de Slots knop in het menu */
-.card-slots {
-    background: linear-gradient(135deg, #d4af37 0%, #8a6d20 100%);
-    border: 1px solid #ffd700;
-    color: white;
-}
-.card-slots:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
-}
-
-/* --- SLOT WIN EFFECTEN --- */
-
-/* Winnende symbolen krijgen een gouden rand en puls */
-.slot-symbol.winner {
-    border: 3px solid #ffd700;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), inset 0 0 20px rgba(255, 215, 0, 0.4);
-    animation: win-pulse 1s infinite alternate;
-    z-index: 10; /* Bovenop liggen */
-}
-
-@keyframes win-pulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.1); box-shadow: 0 0 30px #ffd700; }
-}
-
-/* De winst in beeld (grote tekst) */
-.win-overlay-text {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 4rem;
-    font-weight: 900;
-    color: #fff;
-    text-shadow: 0 0 10px #000, 0 0 20px gold;
-    pointer-events: none;
-    animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 100;
-}
-
-@keyframes pop-in {
-    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-}
-
-/* --- SLOT IMAGES --- */
-
-/* Zorg dat de plaatjes niet uit het vakje breken */
+/* Images inside symbols */
 .slot-img {
-    width: 85%;       /* Vul het vakje grotendeels */
+    width: 85%;
     height: 85%;
-    object-fit: contain; /* Zorg dat de verhoudingen kloppen */
-    
-    /* Een kleine schaduw zodat ze 'los' komen van de achtergrond */
+    object-fit: contain;
     filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5));
 }
 
-/* Mobiel: iets kleiner zodat het past */
-@media (max-width: 600px) {
-    .slot-img {
-        width: 70%;
-        height: 70%;
-    }
+/* --- 4. CONTROLS (BOTTOM BAR) --- */
+.slot-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    background: linear-gradient(to bottom, #2b1d0e, #0f0a05);
+    border: 1px solid #d4af37;
+    padding: 15px 20px;
+    border-radius: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+    position: relative;
 }
 
-/* style.css - SLOTS KAART FIX */
+/* Helper to hide controls during bonus */
+.hidden-visually {
+    display: none !important;
+}
 
+/* Bet Adjuster (+ and -) */
+.bet-adjuster {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #000;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #444;
+}
+
+.bet-adjuster span {
+    color: #fff;
+    font-family: monospace;
+    font-size: 1.2rem;
+    min-width: 50px;
+    text-align: center;
+}
+
+.bet-adjuster button {
+    background: #d4af37;
+    border: none;
+    color: #000;
+    font-weight: bold;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.bet-adjuster button:hover { background: #ffe680; }
+
+/* THE GREEN SPIN BUTTON */
+.btn-spin {
+    background: linear-gradient(to bottom, #00e701 0%, #008f00 100%);
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 900;
+    padding: 10px 35px;
+    border: 2px solid #00ff00;
+    border-radius: 50px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px rgba(0, 231, 1, 0.6), inset 0 2px 0 rgba(255,255,255,0.4);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    transition: transform 0.1s;
+}
+.btn-spin:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(0, 231, 1, 0.8); }
+.btn-spin:active { transform: scale(0.95); }
+.btn-spin:disabled { background: #555; border-color: #333; box-shadow: none; cursor: not-allowed; }
+
+/* --- 5. HOMEPAGE CARD STYLING --- */
 .card-slots {
     position: relative;
     border: 2px solid #ffd700;
@@ -1472,7 +1507,6 @@ button {
     padding: 0 !important;
 }
 
-/* Achtergrond Plaatje */
 .card-image-bg {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -1484,29 +1518,105 @@ button {
 }
 .card-slots:hover .card-image-bg img { transform: scale(1.1); }
 
-/* De Overlay (Gradiënt) */
 .card-overlay {
     position: absolute;
     bottom: 0; left: 0; width: 100%; height: 100%;
     z-index: 2;
-    /* Gradiënt van doorzichtig naar donkerder goud voor leesbaarheid */
     background: linear-gradient(to top, rgba(212, 175, 55, 0.8) 0%, rgba(212, 175, 55, 0.0) 60%);
-    
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; /* Tekst onderin */
+    justify-content: flex-end;
     padding: 15px;
 }
 
-/* De Tekst (DIT MOET DE H2 ZIJN) */
 .card-slots .card-overlay h2 {
-    color: #ffd700 !important; /* Forceer GOUD */
+    color: #ffd700 !important;
     font-size: 1.4rem;
     font-weight: 800;
     text-transform: uppercase;
     text-align: center;
     margin: 0;
-    
-    /* Zwarte rand/schaduw om de letters zodat ze knallen */
     text-shadow: 0 2px 0px #000, 0 0 10px rgba(0,0,0,0.8);
+}
+
+/* --- 6. BONUS BOOK MODAL --- */
+.book-modal {
+    background: radial-gradient(circle, #4a3015 0%, #1a0f05 100%);
+    border: 4px solid #ffd700;
+    box-shadow: 0 0 50px #ffd700, inset 0 0 50px rgba(0,0,0,0.8);
+    width: 90%;
+    max-width: 350px;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    color: #ffd700;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: all 0.5s;
+}
+.view-overlay.active .book-modal { transform: scale(1); opacity: 1; }
+
+.book-header h2 {
+    font-size: 1.8rem; margin-bottom: 5px; text-transform: uppercase;
+    text-shadow: 0 2px 0 #000;
+}
+
+.book-symbol-reveal {
+    width: 120px; height: 120px;
+    margin: 20px auto;
+    background: #000;
+    border: 3px solid #d4af37;
+    border-radius: 10px;
+    display: flex; justify-content: center; align-items: center;
+    box-shadow: inset 0 0 20px #000;
+}
+.reveal-icon img { width: 90px; height: 90px; object-fit: contain; }
+
+/* Animation Classes */
+.scrolling-symbol img { filter: blur(5px); transform: scale(0.9); }
+.chosen-symbol-effect img { animation: symbol-pop 0.5s ease-out forwards; filter: drop-shadow(0 0 10px gold); }
+@keyframes symbol-pop { 
+    0% { transform: scale(0.5); opacity: 0; } 
+    50% { transform: scale(1.2); } 
+    100% { transform: scale(1); opacity: 1; } 
+}
+
+/* --- 7. WIN OVERLAY TEXT --- */
+.win-overlay-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 10px #000, 0 0 20px gold;
+    pointer-events: none;
+    animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 100;
+    white-space: nowrap;
+}
+@keyframes pop-in {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* Winning Symbols Effect */
+.slot-symbol.winner {
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), inset 0 0 20px rgba(255, 215, 0, 0.4);
+    z-index: 10;
+    animation: win-pulse 1s infinite alternate;
+}
+@keyframes win-pulse { 
+    from { transform: scale(1); } 
+    to { transform: scale(1.05); box-shadow: 0 0 30px #ffd700; } 
+}
+
+/* Mobile Fixes for Slots */
+@media (max-width: 600px) {
+    .slot-symbol { width: 60px; height: 60px; }
+    .slot-machine-container { min-width: 0; width: 100%; padding: 10px; }
+    .slot-controls { flex-direction: column; gap: 10px; }
+    .bet-adjuster, .spin-group { width: 100%; justify-content: center; }
+    .btn-spin { width: 100%; }
 }
