@@ -1668,16 +1668,32 @@ button {
     /* De actieknoppen (Hit, Stand, etc) in een vierkant */
     #bj-play-controls {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* 2 kolommen */
-        gap: 10px;
+        grid-template-columns: repeat(4, 1fr); /* 4 kolommen van gelijke breedte */
+        gap: 8px; /* Iets minder ruimte tussen de knoppen */
         width: 100%;
         margin-top: 15px;
     }
 
     .btn-bj-action {
         width: 100%;
-        aspect-ratio: 1/1; /* Vierkant */
+        aspect-ratio: 1/1; /* Blijft vierkant */
+        padding: 5px; /* Minder padding zodat tekst past */
+        display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Icoontjes iets kleiner maken zodat het niet te druk wordt */
+    .btn-icon {
+        font-size: 1.4rem; 
+        margin-bottom: 2px;
+    }
+
+    /* Tekst klein genoeg maken voor 1 regel */
+    .btn-text {
+        font-size: 0.65rem; 
+        font-weight: 800;
     }
     
     /* Fiches en Deel knoppen */
