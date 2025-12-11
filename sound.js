@@ -36,10 +36,3 @@ function stopBonusMusic() {
     audioFiles.bonus.currentTime = 0;
 }
 
-// Knoppen laten klikken
-document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('button');
-    buttons.forEach(btn => {
-        btn.addEventListener('click', () => playSound('click'));
-    });
-});
